@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .resume-container {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+    }
+    
+    .template-preview {
+        width: 100%;
+        height: 120px;
+        border: 3px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        padding: 5px;
+        margin-bottom: 5px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .template-preview:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .template-preview.active {
+        border-color: #4f46e5;
+    }
+    
+    .template-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    
+    .template-preview .template-name {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        padding: 5px;
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .color-swatch {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0 5px;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 1px #ddd;
+        transition: transform 0.2s;
+    }
+    
+    .color-swatch:hover, .color-swatch.active {
+        transform: scale(1.2);
+        border-color: #4f46e5;
+    }
+    
+    .locked-feature {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    @media print {
+        .no-print {
+            display: none;
+        }
+        body {
+            background-color: white;
+        }
+        .resume-container {
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <div class="mb-8 text-center no-print">
+        <h1 class="text-3xl font-bold mb-4">Your AI-Generated Resume</h1>
+        <p class="text-gray-600">Here's your professionally generated resume. {% if not can_download %}Upgrade to download it as a PDF.{% endif %}</p>
+    </div>
+    
+    <div class="flex flex-col md:flex-row gap-8 mb-10">
+        <div class="w-full md:w-3/4 bg-white rounded-lg shadow-lg p-8 resume-container">
+            {{ resume_html|safe }}
+        </div>
+        
+        <div class="w-full md:w-1/4 no-print">
+            <div class="bg-white rounded-lg shadow-md p-6 sticky top-6">
+                <h3 class="text-xl font-semibold mb-4">Resume Options</h3>
+                
+                {% if can_download %}
+                <a href="{{ url_for('download_resume') }}" class="block w-full bg-indigo-600 text-white text-center font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 mb-4">
+                    Download PDF
+                </a>
+                {% else %}
+                <div class="mb-6">
+                    <p class="text-gray-600 mb-4">Upgrade to download your resume as a PDF.</p>
+                    <a href="{{ url_for('payment') }}" class="block w-full bg-indigo-600 text-white text-center font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300">
+                        Upgrade Now (₹49)
+                    </a>
+                </div>
+                {% endif %}
+                
+                <a href="{{ url_for('resume_form', plan=plan) }}" class="block w-full bg-gray-200 text-gray-800 text-center font-medium py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-300 mb-4">
+                    Edit Details
+                </a>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="font-semibold mb-3">Change Template:</h4>
+                    
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        {% for template_id, template_data in templates.items() %}
+                            {% if plan == 'free' and template_id != 'modern' %}
+                                <div class="template-preview locked-feature" title="Upgrade to access this template">
+                                    <img src="{{ template_data.preview_img }}" alt="{{ template_data.name }} Template">
+                                    <div class="template-name">{{ template_data.name }} 🔒</div>
+                                </div>
+                            {% else %}
+                                <a href="{{ url_for('change_template', template_name=template_id) }}" class="template-preview {% if template == template_id %}active{% endif %}">
+                                    <img src="{{ template_data.preview_img }}" alt="{{ template_data.name }} Template">
+                                    <div class="template-name">{{ template_data.name }}</div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <h4 class="font-semibold mb-3 {% if plan == 'free' %}locked-feature{% endif %}">Color Theme:</h4>
+                    <div class="mb-5 text-center">
+                        {% if plan == 'free' %}
+                            <div class="bg-gray-100 p-2 rounded text-sm text-gray-600 mb-3">
+                                ⭐ Upgrade to customize colors
+                            </div>
+                        {% else %}
+                            {% for color in template_info.colors %}
+                                <a href="{{ url_for('change_color', color=color) }}" class="color-swatch" style="background-color: {{ color }};" title="Change to this color"></a>
+                            {% endfor %}
+                            <input type="color" id="custom-color" class="hidden" onchange="changeColor(this.value)">
+                            <label for="custom-color" class="color-swatch" style="background: linear-gradient(135deg, red, blue);" title="Custom color"></label>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if plan in ['pro', 'premium'] and ats_tips %}
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <h4 class="font-semibold mb-2">ATS Optimization Tips:</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        {% for tip in ats_tips %}
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-green-500 mr-1 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{ tip }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {% if plan in ['pro', 'premium'] and can_download %}
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="font-semibold mb-3">Additional Documents:</h4>
+                    <a href="{{ url_for('generate_cover_letter') }}" class="block w-full bg-green-600 text-white text-center font-medium py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300 mb-2">
+                        Generate Cover Letter
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if not can_download %}
+    <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-6 mb-10 no-print">
+        <div class="flex items-start">
+            <div class="text-indigo-500 text-3xl mr-4">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-indigo-800 mb-2">Want to download your resume?</h3>
+                <p class="text-indigo-700 mb-4">Upgrade to our Basic plan for just ₹49 to download your professional resume in PDF format.</p>
+                <a href="{{ url_for('payment') }}" class="inline-block bg-indigo-600 text-white font-medium py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">
+                    Upgrade Now
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="text-center mb-10 no-print">
+        <h2 class="text-2xl font-bold mb-6">What's Next?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Cover Letter</h3>
+                <p class="text-gray-600 mb-4">Complete your application with an AI-generated cover letter.</p>
+                {% if plan in ['pro', 'premium'] and can_download %}
+                <a href="{{ url_for('generate_cover_letter') }}" class="text-indigo-600 font-medium hover:underline">Generate Now</a>
+                {% else %}
+                <span class="text-gray-400">Included in Pro & Premium Plans</span>
+                {% endif %}
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fab fa-linkedin"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">LinkedIn Optimization</h3>
+                <p class="text-gray-600 mb-4">Enhance your LinkedIn profile to attract recruiters.</p>
+                <a href="#" class="text-indigo-600 font-medium hover:underline">Coming Soon</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Job Application Tips</h3>
+                <p class="text-gray-600 mb-4">Get expert advice on acing your job applications.</p>
+                <a href="#" class="text-indigo-600 font-medium hover:underline">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Custom color picker
+        document.getElementById('custom-color')?.addEventListener('change', function() {
+            location.href = "/change-color/" + this.value.substring(1);
+        });
+    });
+    
+    function changeColor(color) {
+        location.href = "/change-color/" + color.substring(1);
+    }
+</script>
+{% endblock %} 

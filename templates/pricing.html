@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Choose Your Plan</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Select the plan that best fits your needs and start creating professional resumes in minutes.</p>
+    </div>
+    
+    <!-- Pricing Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Free Plan -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Free</h3>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    ₹0
+                    <span class="text-lg font-normal text-gray-600">/resume</span>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    {% for feature in plans.free.features %}
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2"><i class="fas fa-check-circle"></i></span>
+                        <span>{{ feature }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('resume_form', plan='free') }}" class="block w-full py-3 px-4 bg-gray-200 text-gray-800 font-medium text-center rounded-lg hover:bg-gray-300 transition duration-300">
+                    Get Started
+                </a>
+            </div>
+        </div>
+        
+        <!-- Basic Plan -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up" data-aos-delay="200">
+            <div class="p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Basic</h3>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    ₹{{ plans.basic.price }}
+                    <span class="text-lg font-normal text-gray-600">/resume</span>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    {% for feature in plans.basic.features %}
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2"><i class="fas fa-check-circle"></i></span>
+                        <span>{{ feature }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('resume_form', plan='basic') }}" class="block w-full py-3 px-4 bg-blue-500 text-white font-medium text-center rounded-lg hover:bg-blue-600 transition duration-300">
+                    Choose Basic
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pro Plan -->
+        <div class="bg-gradient-to-br from-violet-500 to-indigo-600 rounded-xl shadow-md overflow-hidden transform scale-105 hover:shadow-xl transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+            <div class="absolute top-4 right-4">
+                <span class="bg-yellow-400 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">POPULAR</span>
+            </div>
+            <div class="p-8">
+                <h3 class="text-xl font-bold text-white mb-4">Pro</h3>
+                <div class="text-4xl font-bold text-white mb-6">
+                    ₹{{ plans.pro.price }}
+                    <span class="text-lg font-normal text-indigo-100">/resume</span>
+                </div>
+                <ul class="space-y-3 mb-8 text-white">
+                    {% for feature in plans.pro.features %}
+                    <li class="flex items-start">
+                        <span class="text-indigo-200 mr-2"><i class="fas fa-check-circle"></i></span>
+                        <span>{{ feature }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('resume_form', plan='pro') }}" class="block w-full py-3 px-4 bg-white text-indigo-600 font-medium text-center rounded-lg hover:bg-indigo-50 transition duration-300">
+                    Choose Pro
+                </a>
+            </div>
+        </div>
+        
+        <!-- Premium Plan -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up" data-aos-delay="400">
+            <div class="p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Premium</h3>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    ₹{{ plans.premium.price }}
+                    <span class="text-lg font-normal text-gray-600">/resume</span>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    {% for feature in plans.premium.features %}
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2"><i class="fas fa-check-circle"></i></span>
+                        <span>{{ feature }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('resume_form', plan='premium') }}" class="block w-full py-3 px-4 bg-purple-600 text-white font-medium text-center rounded-lg hover:bg-purple-700 transition duration-300">
+                    Choose Premium
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="mt-20">
+        <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Frequently Asked Questions</h2>
+        
+        <div class="max-w-3xl mx-auto">
+            <div class="mb-6" data-aos="fade-up">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Can I upgrade my plan later?</h3>
+                <p class="text-gray-600">Yes, you can upgrade your plan at any time. Your new benefits will be available immediately after payment.</p>
+            </div>
+            
+            <div class="mb-6" data-aos="fade-up">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">How long do I have access to my resume?</h3>
+                <p class="text-gray-600">Once you've purchased a plan, you can download your resume as a PDF and keep it forever. You can also come back and make changes to your resume for up to 30 days.</p>
+            </div>
+            
+            <div class="mb-6" data-aos="fade-up">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">What payment methods do you accept?</h3>
+                <p class="text-gray-600">We accept all major credit and debit cards, as well as UPI payments through our secure payment processor, Razorpay.</p>
+            </div>
+            
+            <div class="mb-6" data-aos="fade-up">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Is my data secure?</h3>
+                <p class="text-gray-600">Yes, we take data security very seriously. Your information is encrypted and we never share it with third parties.</p>
+            </div>
+            
+            <div class="mb-6" data-aos="fade-up">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Do you offer refunds?</h3>
+                <p class="text-gray-600">If you're not satisfied with our service, please contact our support team within 7 days of your purchase for a full refund.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="mt-16 text-center p-8 bg-gray-100 rounded-2xl" data-aos="fade-up">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Still have questions?</h2>
+        <p class="text-gray-600 mb-6">Our team is here to help you choose the best plan for your needs.</p>
+        <a href="mailto:support@airesumebuilder.com" class="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-3 px-8 rounded-full hover:shadow-lg transition duration-300">
+            Contact Support
+        </a>
+    </div>
+</main>
+{% endblock %} 

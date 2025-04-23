@@ -1,0 +1,103 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Premium Features Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+            .tab-content { display: none; }
+            .active { display: block; }
+            .tabs { border-bottom: 1px solid #e5e7eb; }
+            .tab { padding: 12px 16px; cursor: pointer; transition: all 0.3s; }
+            .tab.active { border-bottom: 2px solid #8b5cf6; color: #8b5cf6; }
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        </style>
+    </head>
+    <body class="bg-gray-50">
+        <div class="container mx-auto px-4 py-8">
+            <h1 class="text-3xl font-bold mb-6 text-center text-purple-600">Premium Features Report</h1>
+            
+            <div class="tabs flex mb-4 bg-white shadow rounded-t-lg overflow-hidden">
+                <div class="tab active" onclick="openTab(event, 'variants')">Resume Variants</div>
+                <div class="tab" onclick="openTab(event, 'cover-letter')">Cover Letter</div>
+                <div class="tab" onclick="openTab(event, 'ats')">ATS Optimization</div>
+            </div>
+            
+            <div class="bg-white p-6 shadow rounded-b-lg mb-8">
+                <div id="variants" class="tab-content active">
+                    <h2 class="text-2xl font-bold mb-4">Resume Variants</h2>
+    
+            <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                <div class="bg-purple-50 p-3 mb-4 rounded-md">
+                    <strong>Variant 1:</strong> <span class="text-purple-600">Technical</span> focus, 
+                    <span class="text-purple-600">professional</span> tone
+                </div>
+                <div class="border p-4 rounded bg-gray-50">
+                    <div class="demo-variant"><h2>Technical Emphasis Variant</h2><p>This is a demo variant for testing.</p></div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                <div class="bg-purple-50 p-3 mb-4 rounded-md">
+                    <strong>Variant 2:</strong> <span class="text-purple-600">Leadership</span> focus, 
+                    <span class="text-purple-600">confident</span> tone
+                </div>
+                <div class="border p-4 rounded bg-gray-50">
+                    <div class="demo-variant"><h2>Leadership Emphasis Variant</h2><p>This is a demo variant for testing.</p></div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                <div class="bg-purple-50 p-3 mb-4 rounded-md">
+                    <strong>Variant 3:</strong> <span class="text-purple-600">Creative</span> focus, 
+                    <span class="text-purple-600">enthusiastic</span> tone
+                </div>
+                <div class="border p-4 rounded bg-gray-50">
+                    <div class="demo-variant"><h2>Creative Emphasis Variant</h2><p>This is a demo variant for testing.</p></div>
+                </div>
+            </div>
+            
+    </div>
+    
+    <div id="cover-letter" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">Cover Letter</h2>
+    
+        <div class="border p-6 rounded-lg bg-gray-50">
+            Cover letter content found but could not be extracted.
+        </div>
+        <div class="mt-4">
+            <a href="demo_cover_letter.pdf" class="text-purple-600 font-medium hover:underline" target="_blank">Open PDF version</a>
+            <span class="text-gray-500 text-sm ml-2">(if PDF generation failed, this will open the HTML version)</span>
+        </div>
+        
+    </div>
+    
+    <div id="ats" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">ATS Optimization Tips</h2>
+    <ul class="list-disc pl-8 space-y-3"><li class="text-gray-800">Include keywords from the job description</li><li class="text-gray-800">Use standard section headings</li><li class="text-gray-800">Avoid complex formatting and tables</li><li class="text-gray-800">Tailor your skills section to match job requirements</li><li class="text-gray-800">Quantify your achievements with numbers and metrics</li></ul>
+        </div>
+    </div>
+    
+    <div class="mt-8 text-center text-gray-600 text-sm">
+        Report generated on 2025-04-23 22:31:21
+    </div>
+    
+    <script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+        }
+        tablinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).className += " active";
+        evt.currentTarget.className += " active";
+    }
+    </script>
+    </body>
+    </html>
+    

@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-20 relative overflow-hidden">
+    <!-- Background elements -->
+    <div class="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-700 z-0"></div>
+    <div class="absolute inset-0 opacity-20 z-0" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80'); background-size: cover;"></div>
+    
+    <!-- Animated circles -->
+    <div class="absolute top-20 right-10 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+    <div class="absolute bottom-20 left-10 w-64 h-64 bg-indigo-300 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">Create an <span class="text-yellow-300">ATS-Friendly</span> Resume in Minutes</h1>
+                <p class="text-xl md:text-2xl mb-8 text-indigo-100">Let our AI craft the perfect resume to help you land your dream job</p>
+                <div class="flex flex-wrap md:justify-start justify-center gap-4">
+                    <a href="{{ url_for('resume_form', plan='free') }}" class="bg-white text-indigo-600 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 transform hover:-translate-y-1 btn-hover">Try For Free</a>
+                    <a href="#pricing" class="bg-transparent border-2 border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white hover:text-indigo-600 transition duration-300 transform hover:-translate-y-1 btn-hover">View Pricing</a>
+                </div>
+                <div class="mt-8 flex items-center justify-center md:justify-start gap-3">
+                    <div class="flex -space-x-2">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/18.jpg" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/22.jpg" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/11.jpg" alt="User">
+                    </div>
+                    <p class="text-indigo-100">Joined by <span class="font-bold text-white">2,000+</span> job seekers this week</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2" data-aos="fade-left" data-aos-delay="200">
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-full h-full bg-indigo-200 rounded-xl transform rotate-3"></div>
+                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="Resume Example" class="rounded-xl shadow-2xl relative z-10 w-full">
+                    <div class="absolute -bottom-6 -right-6 bg-yellow-300 text-indigo-800 px-6 py-3 rounded-lg font-bold shadow-lg transform rotate-3">
+                        AI-Powered!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">Why Choose Our AI Resume Generator?</h2>
+            <div class="h-1 w-24 bg-gradient-to-r from-violet-500 to-indigo-600 mx-auto"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-violet-600 text-5xl mb-6">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">AI-Powered</h3>
+                <p class="text-gray-600">Our AI analyzes your experience and generates professionally written content tailored to your industry and career level.</p>
+            </div>
+            
+            <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-violet-600 text-5xl mb-6">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">ATS-Friendly</h3>
+                <p class="text-gray-600">Built to pass Applicant Tracking Systems with optimized formatting and strategic keyword placement to get more interviews.</p>
+            </div>
+            
+            <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-violet-600 text-5xl mb-6">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Quick & Easy</h3>
+                <p class="text-gray-600">Create a professional resume in just 5 minutes with our user-friendly form. No design or writing skills required.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">How It Works</h2>
+            <p class="text-gray-600 text-lg">Create a professional resume in 4 simple steps</p>
+            <div class="h-1 w-24 bg-gradient-to-r from-violet-500 to-indigo-600 mx-auto mt-6"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="relative text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-gradient-to-r from-violet-500 to-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">1</div>
+                <h3 class="text-xl font-semibold mb-3">Fill the Form</h3>
+                <p class="text-gray-600">Enter your details, education, experience, and skills.</p>
+                <!-- Connecting line for desktop -->
+                <div class="hidden md:block absolute top-10 left-full w-full h-0.5 bg-gray-200 -z-10 transform translate-x-[-50%]"></div>
+            </div>
+            
+            <div class="relative text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-gradient-to-r from-violet-500 to-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">2</div>
+                <h3 class="text-xl font-semibold mb-3">AI Generation</h3>
+                <p class="text-gray-600">Our AI creates a professional resume based on your inputs.</p>
+                <!-- Connecting line for desktop -->
+                <div class="hidden md:block absolute top-10 left-full w-full h-0.5 bg-gray-200 -z-10 transform translate-x-[-50%]"></div>
+            </div>
+            
+            <div class="relative text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-gradient-to-r from-violet-500 to-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">3</div>
+                <h3 class="text-xl font-semibold mb-3">Preview</h3>
+                <p class="text-gray-600">Review your AI-generated resume and make adjustments.</p>
+                <!-- Connecting line for desktop -->
+                <div class="hidden md:block absolute top-10 left-full w-full h-0.5 bg-gray-200 -z-10 transform translate-x-[-50%]"></div>
+            </div>
+            
+            <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                <div class="bg-gradient-to-r from-violet-500 to-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">4</div>
+                <h3 class="text-xl font-semibold mb-3">Download</h3>
+                <p class="text-gray-600">Get your polished resume in PDF format, ready to use.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Template Showcase Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">Professional Resume Templates</h2>
+            <p class="text-gray-600 text-lg">Choose from our collection of ATS-optimized templates</p>
+            <div class="h-1 w-24 bg-gradient-to-r from-violet-500 to-indigo-600 mx-auto mt-6"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Modern Template -->
+            <div class="glass-card rounded-xl overflow-hidden shadow-lg group" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative overflow-hidden h-72">
+                    <img src="/static/img/templates/modern.jpg" alt="Modern Template" class="w-full h-full object-cover object-top transition-transform duration-700 transform group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-violet-900 to-transparent opacity-0 group-hover:opacity-70 transition-opacity flex items-end justify-center p-6">
+                        <div class="text-white text-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="text-xl font-bold mb-2">Modern Template</h3>
+                            <p class="mb-4">Clean and professional design with customizable accent colors</p>
+                            <a href="{{ url_for('resume_form', plan='basic', template='modern') }}" class="inline-block bg-white text-violet-600 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition">Use This Template</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-semibold mb-2">Modern</h3>
+                    <p class="text-gray-600 mb-4">Clean and professional design with a blue accent color</p>
+                    <div class="flex space-x-3">
+                        <span class="w-5 h-5 rounded-full" style="background-color: #3498db;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #2ecc71;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #e74c3c;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #9b59b6;"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elegant Template -->
+            <div class="glass-card rounded-xl overflow-hidden shadow-lg group" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative overflow-hidden h-72">
+                    <img src="/static/img/templates/elegant.jpg" alt="Elegant Template" class="w-full h-full object-cover object-top transition-transform duration-700 transform group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-violet-900 to-transparent opacity-0 group-hover:opacity-70 transition-opacity flex items-end justify-center p-6">
+                        <div class="text-white text-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="text-xl font-bold mb-2">Elegant Template</h3>
+                            <p class="mb-4">Sophisticated design with serif fonts and classic styling</p>
+                            <a href="{{ url_for('resume_form', plan='basic', template='elegant') }}" class="inline-block bg-white text-violet-600 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition">Use This Template</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-semibold mb-2">Elegant</h3>
+                    <p class="text-gray-600 mb-4">Sophisticated design with serif fonts and classic styling</p>
+                    <div class="flex space-x-3">
+                        <span class="w-5 h-5 rounded-full" style="background-color: #8e7057;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #7d3c98;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #2e4053;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #186a3b;"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creative Template -->
+            <div class="glass-card rounded-xl overflow-hidden shadow-lg group" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative overflow-hidden h-72">
+                    <img src="/static/img/templates/creative.jpg" alt="Creative Template" class="w-full h-full object-cover object-top transition-transform duration-700 transform group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-violet-900 to-transparent opacity-0 group-hover:opacity-70 transition-opacity flex items-end justify-center p-6">
+                        <div class="text-white text-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="text-xl font-bold mb-2">Creative Template</h3>
+                            <p class="mb-4">Eye-catching design with a sidebar and modern layout</p>
+                            <a href="{{ url_for('resume_form', plan='basic', template='creative') }}" class="inline-block bg-white text-violet-600 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition">Use This Template</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-semibold mb-2">Creative</h3>
+                    <p class="text-gray-600 mb-4">Eye-catching design with a sidebar and modern layout</p>
+                    <div class="flex space-x-3">
+                        <span class="w-5 h-5 rounded-full" style="background-color: #6a11cb;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #006266;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #1289a7;"></span>
+                        <span class="w-5 h-5 rounded-full" style="background-color: #d980fa;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12" data-aos="fade-up">
+            <a href="{{ url_for('resume_form', plan='basic') }}" class="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all btn-hover">
+                Get Started With Any Template
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Choose Your Plan</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for plan_id, plan in plans.items() %}
+            <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden {% if plan_id == 'basic' %}border-indigo-500 border-2{% endif %}">
+                {% if plan_id == 'basic' %}
+                <div class="bg-indigo-500 text-white text-center py-2">
+                    <p class="text-sm font-semibold">MOST POPULAR</p>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ plan.name }}</h3>
+                    <div class="text-3xl font-bold mb-4">
+                        ₹{{ plan.price }}
+                        {% if plan_id == 'free' %}
+                        <span class="text-gray-500 text-base font-normal">Free forever</span>
+                        {% endif %}
+                    </div>
+                    <ul class="mb-6 space-y-2">
+                        {% for feature in plan.features %}
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ feature }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{ url_for('resume_form', plan=plan_id) }}" class="block text-center bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300">
+                        {% if plan_id == 'free' %}
+                        Try for Free
+                        {% else %}
+                        Get Started
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="ml-2 text-gray-600">5.0</span>
+                </div>
+                <p class="text-gray-600 mb-4">"Got 3 interview calls within a week of using this resume. The AI perfectly highlighted my skills. Worth every rupee!"</p>
+                <div class="flex items-center">
+                    <div class="bg-indigo-100 text-indigo-600 w-10 h-10 rounded-full flex items-center justify-center font-semibold">RK</div>
+                    <div class="ml-3">
+                        <p class="font-semibold">Rahul Kumar</p>
+                        <p class="text-gray-500 text-sm">Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="ml-2 text-gray-600">5.0</span>
+                </div>
+                <p class="text-gray-600 mb-4">"As a recent graduate, I had no idea how to make my resume stand out. This tool made it so easy and professional!"</p>
+                <div class="flex items-center">
+                    <div class="bg-indigo-100 text-indigo-600 w-10 h-10 rounded-full flex items-center justify-center font-semibold">PS</div>
+                    <div class="ml-3">
+                        <p class="font-semibold">Priya Singh</p>
+                        <p class="text-gray-500 text-sm">Recent Graduate</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="ml-2 text-gray-600">4.5</span>
+                </div>
+                <p class="text-gray-600 mb-4">"Finally landed my dream job after using this resume generator. The ATS optimization really works - my resume actually got seen by recruiters!"</p>
+                <div class="flex items-center">
+                    <div class="bg-indigo-100 text-indigo-600 w-10 h-10 rounded-full flex items-center justify-center font-semibold">AT</div>
+                    <div class="ml-3">
+                        <p class="font-semibold">Arjun Tiwari</p>
+                        <p class="text-gray-500 text-sm">Marketing Professional</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-indigo-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">Ready to Create Your Professional Resume?</h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto">Don't let a poor resume hold you back. Create an ATS-friendly resume in minutes and increase your chances of landing that interview.</p>
+        <a href="{{ url_for('resume_form', plan='basic') }}" class="bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-100 transition duration-300 inline-block">Get Started for ₹49 Only</a>
+    </div>
+</section>
+{% endblock %} 

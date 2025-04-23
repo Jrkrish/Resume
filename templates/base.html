@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Generator</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --accent: #f472b6;
+            --dark: #111827;
+            --light: #f9fafb;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            overflow-x: hidden;
+        }
+        
+        @keyframes blob {
+            0% {
+                transform: scale(1) translate(0px, 0px);
+            }
+            33% {
+                transform: scale(1.1) translate(40px, -60px);
+            }
+            66% {
+                transform: scale(0.9) translate(-20px, 20px);
+            }
+            100% {
+                transform: scale(1) translate(0px, 0px);
+            }
+        }
+        
+        .animate-blob {
+            animation: blob 7s infinite ease-in-out;
+        }
+        
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        
+        /* Glass effect for cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.15);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        
+        /* Button hover effects */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .btn-primary:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            z-index: -2;
+        }
+        
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary-hover);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover:before {
+            width: 100%;
+        }
+        
+        /* Navigation link animation */
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Animated Gradient Background Elements -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute -top-[40vh] -right-[40vh] w-[80vh] h-[80vh] rounded-full bg-gradient-to-br from-purple-200/30 to-purple-400/30 blur-3xl animate-blob"></div>
+        <div class="absolute -bottom-[40vh] -left-[40vh] w-[80vh] h-[80vh] rounded-full bg-gradient-to-br from-emerald-200/30 to-emerald-400/30 blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[10vh] left-[30vw] w-[60vh] h-[60vh] rounded-full bg-gradient-to-br from-pink-200/20 to-blue-300/20 blur-3xl animate-blob animation-delay-4000"></div>
+        <div class="absolute bottom-[20vh] right-[20vw] w-[50vh] h-[50vh] rounded-full bg-gradient-to-br from-yellow-200/20 to-orange-300/20 blur-3xl animate-blob animation-delay-2000"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm py-4 border-b border-gray-200">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <span class="text-3xl text-violet-600"><i class="fas fa-file-alt"></i></span>
+                <span class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">ResumeAI</span>
+            </a>
+            <div class="space-x-6">
+                <a href="/" class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all">Home</a>
+                
+                <!-- Templates Dropdown -->
+                <div class="relative inline-block group">
+                    <button class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all inline-flex items-center">
+                        Templates <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="{{ url_for('resume_form', plan='basic', template='modern') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Modern Template
+                            </a>
+                            <a href="{{ url_for('resume_form', plan='basic', template='elegant') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Elegant Template
+                            </a>
+                            <a href="{{ url_for('resume_form', plan='basic', template='creative') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Creative Template
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="{{ url_for('resume_form', plan='basic') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-th-large mr-2 text-violet-500"></i> View All Templates
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#pricing" class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all">Pricing</a>
+                
+                <!-- Resources Dropdown -->
+                <div class="relative inline-block group">
+                    <button class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all inline-flex items-center">
+                        Resources <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="{{ url_for('resume_tips') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-lightbulb mr-2 text-violet-500"></i> Resume Tips
+                            </a>
+                            <a href="{{ url_for('career_advice') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-briefcase mr-2 text-violet-500"></i> Career Advice
+                            </a>
+                            <a href="{{ url_for('blog') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-book mr-2 text-violet-500"></i> Career Blog
+                            </a>
+                            <a href="{{ url_for('faq') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-question-circle mr-2 text-violet-500"></i> FAQ
+                            </a>
+                            <a href="{{ url_for('generate_cover_letter') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-envelope mr-2 text-violet-500"></i> Cover Letter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="{{ url_for('resume_form', plan='free') }}" class="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-2 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all btn-hover">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="container mx-auto px-4 mt-4">
+                {% for message in messages %}
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded-r-md shadow-sm" role="alert" data-aos="fade-down" data-aos-duration="800">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-4">AI Resume Generator</h3>
+                    <p class="text-gray-400 mb-4">Create professional resumes in minutes with our AI-powered platform. Stand out from the competition with modern designs.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="/resume-form" class="text-gray-400 hover:text-white transition-colors">Create Resume</a></li>
+                        <li><a href="/templates" class="text-gray-400 hover:text-white transition-colors">Templates</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('resume_tips') }}" class="text-gray-400 hover:text-white transition-colors">Resume Tips</a></li>
+                        <li><a href="{{ url_for('career_advice') }}" class="text-gray-400 hover:text-white transition-colors">Career Advice</a></li>
+                        <li><a href="{{ url_for('faq') }}" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="{{ url_for('blog') }}" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2"></i>
+                            <span>support@airesumebuilder.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                            <span>123 Resume St, San Francisco, CA 94103</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">&copy; 2023 AI Resume Generator. All rights reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    <a href="#" class="text-sm text-gray-400 hover:text-white mr-4 transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-sm text-gray-400 hover:text-white mr-4 transition-colors">Terms of Service</a>
+                    <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+    <script>
+        // Initialize AOS animation library
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        });
+    </script>
+</body>
+</html> 

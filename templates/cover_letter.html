@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .cover-letter-container {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.6;
+        background-color: white;
+        padding: 40px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+    .actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .print-button {
+        background-color: #6c757d;
+        color: white;
+    }
+    pre {
+        white-space: pre-wrap;
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.6;
+    }
+    @media print {
+        .no-print {
+            display: none;
+        }
+        body {
+            background-color: white;
+        }
+        .cover-letter-container {
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <div class="max-w-3xl mx-auto">
+        <div class="mb-8 text-center no-print">
+            <h1 class="text-3xl font-bold mb-4">Your Cover Letter</h1>
+            <p class="text-gray-600">Here's your professionally generated cover letter that matches your resume.</p>
+        </div>
+        
+        <div class="cover-letter-container">
+            <pre>{{ cover_letter }}</pre>
+        </div>
+        
+        <div class="actions no-print">
+            <a href="{{ url_for('download_cover_letter') }}" class="inline-block bg-indigo-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">
+                Download PDF
+            </a>
+            <button onclick="window.print()" class="print-button inline-block font-medium py-3 px-6 rounded-lg hover:bg-gray-600 transition duration-300">
+                Print
+            </button>
+            <a href="{{ url_for('preview_resume') }}" class="inline-block bg-gray-200 text-gray-800 font-medium py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300">
+                Back to Resume
+            </a>
+        </div>
+        
+        <div class="mt-10 p-6 bg-blue-50 rounded-lg border border-blue-100 no-print">
+            <h3 class="text-xl font-semibold mb-4 text-blue-800">Cover Letter Tips</h3>
+            <ul class="space-y-2 text-blue-800">
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Customize this cover letter for each job application by adding the company name and specific role.</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Address it to a specific person whenever possible rather than "To Whom It May Concern".</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Keep your cover letter to one page, focusing on the most relevant skills and experiences.</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Proofread carefully for grammar and spelling errors before sending.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Any JavaScript for the cover letter page can go here
+    });
+</script>
+{% endblock %} 

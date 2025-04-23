@@ -1,0 +1,3846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Generator</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --accent: #f472b6;
+            --dark: #111827;
+            --light: #f9fafb;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            overflow-x: hidden;
+        }
+        
+        @keyframes blob {
+            0% {
+                transform: scale(1) translate(0px, 0px);
+            }
+            33% {
+                transform: scale(1.1) translate(40px, -60px);
+            }
+            66% {
+                transform: scale(0.9) translate(-20px, 20px);
+            }
+            100% {
+                transform: scale(1) translate(0px, 0px);
+            }
+        }
+        
+        .animate-blob {
+            animation: blob 7s infinite ease-in-out;
+        }
+        
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        
+        /* Glass effect for cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.15);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        
+        /* Button hover effects */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .btn-primary:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            z-index: -2;
+        }
+        
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary-hover);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover:before {
+            width: 100%;
+        }
+        
+        /* Navigation link animation */
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+    </style>
+    
+<style>
+    .cover-letter-container {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.6;
+        background-color: white;
+        padding: 40px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+    .actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .print-button {
+        background-color: #6c757d;
+        color: white;
+    }
+    pre {
+        white-space: pre-wrap;
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.6;
+    }
+    @media print {
+        .no-print {
+            display: none;
+        }
+        body {
+            background-color: white;
+        }
+        .cover-letter-container {
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+    }
+</style>
+
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Animated Gradient Background Elements -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute -top-[40vh] -right-[40vh] w-[80vh] h-[80vh] rounded-full bg-gradient-to-br from-purple-200/30 to-purple-400/30 blur-3xl animate-blob"></div>
+        <div class="absolute -bottom-[40vh] -left-[40vh] w-[80vh] h-[80vh] rounded-full bg-gradient-to-br from-emerald-200/30 to-emerald-400/30 blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[10vh] left-[30vw] w-[60vh] h-[60vh] rounded-full bg-gradient-to-br from-pink-200/20 to-blue-300/20 blur-3xl animate-blob animation-delay-4000"></div>
+        <div class="absolute bottom-[20vh] right-[20vw] w-[50vh] h-[50vh] rounded-full bg-gradient-to-br from-yellow-200/20 to-orange-300/20 blur-3xl animate-blob animation-delay-2000"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm py-4 border-b border-gray-200">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <span class="text-3xl text-violet-600"><i class="fas fa-file-alt"></i></span>
+                <span class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">ResumeAI</span>
+            </a>
+            <div class="space-x-6">
+                <a href="/" class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all">Home</a>
+                
+                <!-- Templates Dropdown -->
+                <div class="relative inline-block group">
+                    <button class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all inline-flex items-center">
+                        Templates <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="/resume-form?plan=basic&amp;template=modern" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Modern Template
+                            </a>
+                            <a href="/resume-form?plan=basic&amp;template=elegant" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Elegant Template
+                            </a>
+                            <a href="/resume-form?plan=basic&amp;template=creative" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-file-alt mr-2 text-violet-500"></i> Creative Template
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="/resume-form?plan=basic" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-th-large mr-2 text-violet-500"></i> View All Templates
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#pricing" class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all">Pricing</a>
+                
+                <!-- Resources Dropdown -->
+                <div class="relative inline-block group">
+                    <button class="nav-link font-medium text-gray-700 hover:text-violet-600 transition-all inline-flex items-center">
+                        Resources <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="/resume-tips" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-lightbulb mr-2 text-violet-500"></i> Resume Tips
+                            </a>
+                            <a href="/career-advice" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-briefcase mr-2 text-violet-500"></i> Career Advice
+                            </a>
+                            <a href="/blog" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-book mr-2 text-violet-500"></i> Career Blog
+                            </a>
+                            <a href="/faq" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-question-circle mr-2 text-violet-500"></i> FAQ
+                            </a>
+                            <a href="/generate-cover-letter" class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-600">
+                                <i class="fas fa-envelope mr-2 text-violet-500"></i> Cover Letter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/resume-form?plan=free" class="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-2 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all btn-hover">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    
+        
+            <div class="container mx-auto px-4 mt-4">
+                
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded-r-md shadow-sm" role="alert" data-aos="fade-down" data-aos-duration="800">
+                        <p>Error generating PDF: No wkhtmltopdf executable found: &#34;b&#39;&#39;&#34;
+If this file exists please check that this process can read it or you can pass path to it manually in method call, check README. Otherwise please install wkhtmltopdf - https://github.com/JazzCore/python-pdfkit/wiki/Installing-wkhtmltopdf</p>
+                    </div>
+                
+            </div>
+        
+    
+
+    
+<div class="container mx-auto px-4 py-10">
+    <div class="max-w-3xl mx-auto">
+        <div class="mb-8 text-center no-print">
+            <h1 class="text-3xl font-bold mb-4">Your Cover Letter</h1>
+            <p class="text-gray-600">Here's your professionally generated cover letter that matches your resume.</p>
+        </div>
+        
+        <div class="cover-letter-container">
+            <pre>[Your Date]
+
+[Recipient Name]
+[Recipient Title]
+[Company Name]
+[Company Address]
+
+Dear [Recipient Name],
+
+I am writing to express my keen interest in software engineering opportunities at [Company Name], as advertised on [Platform where you saw the advertisement - e.g., company website, LinkedIn].  With my five years of experience in software development, encompassing roles at both established tech companies and agile startups, I am confident I possess the skills and expertise to make a significant contribution to your team.
+
+My background includes expertise in Python, JavaScript, and cloud technologies, specifically AWS, Docker, and Kubernetes.  As a Senior Developer at Tech Company (2021-2023), I was responsible for [briefly mention 1-2 significant accomplishments or responsibilities, quantifying them if possible.  E.g., &#34;leading the development of a new feature that resulted in a 15% increase in user engagement&#34; or &#34;managing a team of three junior developers on a critical project delivered ahead of schedule and under budget&#34;].  Prior to that, my role as a Software Engineer at Startup Inc (2019-2021) provided valuable experience in [mention a key skill or experience gained, e.g., &#34;rapid prototyping and agile development methodologies&#34;].
+
+My skillset also includes proficiency in React, Node.js, and foundational knowledge in Machine Learning.  I am a highly motivated and results-oriented individual with a proven ability to adapt to new technologies and challenges.  I am eager to leverage my skills to contribute to a dynamic and innovative environment such as [Company Name].
+
+Thank you for your time and consideration. I have attached my resume for your review and welcome the opportunity to discuss how my qualifications align with your needs.
+
+Sincerely,
+
+John Doe
+john.doe@example.com
+123-456-7890
+</pre>
+        </div>
+        
+        <div class="actions no-print">
+            <a href="/download-cover-letter" class="inline-block bg-indigo-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300">
+                Download PDF
+            </a>
+            <button onclick="window.print()" class="print-button inline-block font-medium py-3 px-6 rounded-lg hover:bg-gray-600 transition duration-300">
+                Print
+            </button>
+            <a href="/preview-resume" class="inline-block bg-gray-200 text-gray-800 font-medium py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300">
+                Back to Resume
+            </a>
+        </div>
+        
+        <div class="mt-10 p-6 bg-blue-50 rounded-lg border border-blue-100 no-print">
+            <h3 class="text-xl font-semibold mb-4 text-blue-800">Cover Letter Tips</h3>
+            <ul class="space-y-2 text-blue-800">
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Customize this cover letter for each job application by adding the company name and specific role.</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Address it to a specific person whenever possible rather than "To Whom It May Concern".</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Keep your cover letter to one page, focusing on the most relevant skills and experiences.</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Proofread carefully for grammar and spelling errors before sending.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-4">AI Resume Generator</h3>
+                    <p class="text-gray-400 mb-4">Create professional resumes in minutes with our AI-powered platform. Stand out from the competition with modern designs.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="/resume-form" class="text-gray-400 hover:text-white transition-colors">Create Resume</a></li>
+                        <li><a href="/templates" class="text-gray-400 hover:text-white transition-colors">Templates</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/resume-tips" class="text-gray-400 hover:text-white transition-colors">Resume Tips</a></li>
+                        <li><a href="/career-advice" class="text-gray-400 hover:text-white transition-colors">Career Advice</a></li>
+                        <li><a href="/faq" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="/blog" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2"></i>
+                            <span>support@airesumebuilder.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                            <span>123 Resume St, San Francisco, CA 94103</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">&copy; 2023 AI Resume Generator. All rights reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    <a href="#" class="text-sm text-gray-400 hover:text-white mr-4 transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-sm text-gray-400 hover:text-white mr-4 transition-colors">Terms of Service</a>
+                    <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Any JavaScript for the cover letter page can go here
+    });
+</script>
+
+    <script>
+        // Initialize AOS animation library
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        });
+    </script>
+<div id="flDebug" style="display:none;">
+  <script type="text/javascript">var DEBUG_TOOLBAR_STATIC_PATH = '/_debug_toolbar/static/'</script>
+  <script type="text/javascript" src="/_debug_toolbar/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/_debug_toolbar/static/js/jquery.tablesorter.js"></script>
+  <script type="text/javascript" src="/_debug_toolbar/static/js/toolbar.js"></script>
+
+  <div style="display: none;" id="flDebugToolbar">
+    <ol id="flDebugPanelList">
+      
+      <li><a id="flDebugHideToolBarButton" href="#" title="Hide Toolbar">Hide &raquo;</a></li>
+      
+
+      
+      <li id="flDebugVersionPanel">
+        
+        <a href="" title="Versions" class="flDebugVersionPanel">
+        
+
+        Versions
+        <br /><small>Flask 2.2.3</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTimerPanel">
+        
+        <div class="flDebugContentless">
+        
+
+        Time
+        <br /><small>TOTAL: 3264.68ms</small>
+
+        
+        </div>
+        
+        
+      </li>
+      
+      <li id="flDebugHeaderPanel">
+        
+        <a href="" title="HTTP Headers" class="flDebugHeaderPanel">
+        
+
+        HTTP Headers
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRequestVarsPanel">
+        
+        <a href="" title="Request Vars" class="flDebugRequestVarsPanel">
+        
+
+        Request Vars
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugConfigVarsPanel">
+        
+        <a href="" title="Config" class="flDebugConfigVarsPanel">
+        
+
+        Config
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugTemplatePanel">
+        
+        <a href="" title="Templates" class="flDebugTemplatePanel">
+        
+
+        Templates
+        <br /><small>1 rendered</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugSQLAlchemyPanel">
+        
+        <a href="" title="SQLAlchemy queries" class="flDebugSQLAlchemyPanel">
+        
+
+        SQLAlchemy
+        <br /><small>Unavailable</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugLoggingPanel">
+        
+        <a href="" title="Log Messages" class="flDebugLoggingPanel">
+        
+
+        Logging
+        <br /><small>0 messages</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugRouteListPanel">
+        
+        <a href="" title="Route List" class="flDebugRouteListPanel">
+        
+
+        Route List
+        <br /><small>22 routes</small>
+
+        
+        </a>
+        
+        
+      </li>
+      
+      <li id="flDebugProfilerPanel">
+        
+        <a href="" title="Profiler not active" class="flDebugProfilerPanel">
+        
+
+        Profiler
+        <br /><small>in-active</small>
+
+        
+        </a>
+        
+        
+        <span class="flDebugSwitch flDebugInactive" title="Enable or disable the panel"></span>
+        
+      </li>
+      
+      <li id="flDebuggPanel">
+        
+        <a href="" title="flask.g content" class="flDebuggPanel">
+        
+
+        flask.g
+        
+
+        
+        </a>
+        
+        
+      </li>
+      
+    </ol>
+  </div>
+  <div style="display:none;" id="flDebugToolbarHandle">
+    <a title="Show Toolbar" id="flDebugShowToolBarButton" href="#">&laquo;</a>
+  </div>
+  
+    
+    <div id="flDebugVersionPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Versions</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <h4>Installed Packages</h4>
+
+<p>
+  Installation paths relative to:
+</p>
+<pre>
+C:\Users\thamimul ansari\AppData\Local\Programs\Python\Python311\Lib\site-packages
+</pre>
+
+<table>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Version</th>
+      <th>Installed Path</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>-angchain-core</td>
+        <td>0.2.41</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>absl-py</td>
+        <td>2.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>accelerate</td>
+        <td>0.33.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>aiohappyeyeballs</td>
+        <td>2.3.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>aiohttp</td>
+        <td>3.10.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>aiosignal</td>
+        <td>1.3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>altair</td>
+        <td>5.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>annotated-types</td>
+        <td>0.7.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>anyio</td>
+        <td>4.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>argon2-cffi</td>
+        <td>23.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>argon2-cffi-bindings</td>
+        <td>21.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>arrow</td>
+        <td>1.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>asgiref</td>
+        <td>3.8.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>asttokens</td>
+        <td>2.4.1</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>astunparse</td>
+        <td>1.6.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>async-lru</td>
+        <td>2.0.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>asyncio</td>
+        <td>3.4.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>attrs</td>
+        <td>23.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>babel</td>
+        <td>2.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>backoff</td>
+        <td>2.2.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>bcrypt</td>
+        <td>4.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>beautifulsoup4</td>
+        <td>4.12.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>bleach</td>
+        <td>6.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>blinker</td>
+        <td>1.9.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>blis</td>
+        <td>0.7.11</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>build</td>
+        <td>1.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>cachetools</td>
+        <td>5.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>catalogue</td>
+        <td>2.0.10</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>certifi</td>
+        <td>2024.7.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>cffi</td>
+        <td>1.17.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>chardet</td>
+        <td>5.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>charset-normalizer</td>
+        <td>3.3.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>chroma-hnswlib</td>
+        <td>0.7.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>chromadb</td>
+        <td>0.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>clarifai</td>
+        <td>9.6.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>clarifai-grpc</td>
+        <td>10.7.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>click</td>
+        <td>8.1.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>cloudpathlib</td>
+        <td>0.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>cloudpickle</td>
+        <td>3.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>colorama</td>
+        <td>0.4.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>coloredlogs</td>
+        <td>15.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>comm</td>
+        <td>0.2.2</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>confection</td>
+        <td>0.1.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>contourpy</td>
+        <td>1.2.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>cryptography</td>
+        <td>43.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>cycler</td>
+        <td>0.12.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>cymem</td>
+        <td>2.0.8</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>dataclasses-json</td>
+        <td>0.6.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>datasets</td>
+        <td>3.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>debugpy</td>
+        <td>1.8.5</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>decorator</td>
+        <td>5.1.1</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>deepdiff</td>
+        <td>8.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>defusedxml</td>
+        <td>0.7.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Deprecated</td>
+        <td>1.2.14</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>dill</td>
+        <td>0.3.8</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>diskcache</td>
+        <td>5.6.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>distro</td>
+        <td>1.9.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>dnspython</td>
+        <td>1.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>durationpy</td>
+        <td>0.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>EasyProcess</td>
+        <td>1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>einops</td>
+        <td>0.8.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>emoji</td>
+        <td>2.13.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>entrypoint2</td>
+        <td>1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>executing</td>
+        <td>2.0.1</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>faiss-cpu</td>
+        <td>1.8.0.post1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Faker</td>
+        <td>30.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>fastapi</td>
+        <td>0.115.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>fastjsonschema</td>
+        <td>2.20.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>filelock</td>
+        <td>3.15.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>filetype</td>
+        <td>1.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask</td>
+        <td>2.2.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>flask-cors</td>
+        <td>5.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-DebugToolbar</td>
+        <td>0.13.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Flask-Login</td>
+        <td>0.6.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-PyMongo</td>
+        <td>2.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>flask-sqlalchemy</td>
+        <td>3.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Flask-WTF</td>
+        <td>1.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>flatbuffers</td>
+        <td>24.3.25</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>fonttools</td>
+        <td>4.53.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>fqdn</td>
+        <td>1.5.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>frozenlist</td>
+        <td>1.4.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>fsspec</td>
+        <td>2024.6.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>gast</td>
+        <td>0.6.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>geographiclib</td>
+        <td>2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>geopy</td>
+        <td>2.4.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>gguf</td>
+        <td>0.10.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>gitdb</td>
+        <td>4.0.11</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>GitPython</td>
+        <td>3.1.43</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>google-ai-generativelanguage</td>
+        <td>0.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>google-api-core</td>
+        <td>2.19.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>google-api-python-client</td>
+        <td>2.140.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>google-auth</td>
+        <td>2.33.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>google-auth-httplib2</td>
+        <td>0.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>google-generativeai</td>
+        <td>0.3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>google-pasta</td>
+        <td>0.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>googleapis-common-protos</td>
+        <td>1.63.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>greenlet</td>
+        <td>3.0.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>groq</td>
+        <td>0.4.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>grpcio</td>
+        <td>1.71.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>grpcio-status</td>
+        <td>1.62.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>gTTS</td>
+        <td>2.5.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>gunicorn</td>
+        <td>20.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>h11</td>
+        <td>0.14.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>h5py</td>
+        <td>3.11.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>hmmlearn</td>
+        <td>0.3.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>httpcore</td>
+        <td>1.0.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>httplib2</td>
+        <td>0.22.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>httptools</td>
+        <td>0.6.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>httpx</td>
+        <td>0.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>huggingface-hub</td>
+        <td>0.17.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>humanfriendly</td>
+        <td>10.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>idna</td>
+        <td>3.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>imageio</td>
+        <td>2.35.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>importlib-metadata</td>
+        <td>6.11.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>importlib-resources</td>
+        <td>6.4.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>iniconfig</td>
+        <td>2.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>interegular</td>
+        <td>0.3.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>ipykernel</td>
+        <td>6.29.5</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ipython</td>
+        <td>8.26.0</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>ipywidgets</td>
+        <td>8.1.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>isoduration</td>
+        <td>20.11.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>itsdangerous</td>
+        <td>2.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jedi</td>
+        <td>0.19.1</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jinja2</td>
+        <td>3.1.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jiter</td>
+        <td>0.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>joblib</td>
+        <td>1.4.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>json5</td>
+        <td>0.9.25</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jsonpatch</td>
+        <td>1.33</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jsonpath-python</td>
+        <td>1.0.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jsonpointer</td>
+        <td>3.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jsonschema</td>
+        <td>4.23.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jsonschema-specifications</td>
+        <td>2023.12.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyter</td>
+        <td>1.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyter-client</td>
+        <td>8.6.2</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyter-console</td>
+        <td>6.6.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyter-core</td>
+        <td>5.7.2</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyter-events</td>
+        <td>0.10.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyter-lsp</td>
+        <td>2.2.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyter-server</td>
+        <td>2.14.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyter-server-terminals</td>
+        <td>0.5.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyterlab</td>
+        <td>4.2.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyterlab-pygments</td>
+        <td>0.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>jupyterlab-server</td>
+        <td>2.27.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>jupyterlab-widgets</td>
+        <td>3.0.13</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>keras</td>
+        <td>3.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>kiwisolver</td>
+        <td>1.4.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>kubernetes</td>
+        <td>31.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>langchain</td>
+        <td>0.2.14</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>langchain-community</td>
+        <td>0.2.12</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>langchain-core</td>
+        <td>0.3.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>langchain-groq</td>
+        <td>0.1.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>langchain-text-splitters</td>
+        <td>0.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>langcodes</td>
+        <td>3.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>langdetect</td>
+        <td>1.0.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>langsmith</td>
+        <td>0.1.128</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>language-data</td>
+        <td>1.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>lark</td>
+        <td>1.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>lazy-loader</td>
+        <td>0.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>libclang</td>
+        <td>18.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>llvmlite</td>
+        <td>0.43.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>lm-format-enforcer</td>
+        <td>0.10.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>lxml</td>
+        <td>5.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>marisa-trie</td>
+        <td>1.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>Markdown</td>
+        <td>3.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>markdown-it-py</td>
+        <td>3.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>MarkupSafe</td>
+        <td>2.1.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>marshmallow</td>
+        <td>3.21.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>matplotlib</td>
+        <td>3.9.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>matplotlib-inline</td>
+        <td>0.1.7</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>mdurl</td>
+        <td>0.1.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>mistral-common</td>
+        <td>1.4.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>mistune</td>
+        <td>3.0.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ml-dtypes</td>
+        <td>0.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>mlxtend</td>
+        <td>0.23.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>mmh3</td>
+        <td>5.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>monotonic</td>
+        <td>1.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>MouseInfo</td>
+        <td>0.1.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>mpmath</td>
+        <td>1.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>msgpack</td>
+        <td>1.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>msgspec</td>
+        <td>0.18.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>mss</td>
+        <td>9.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>multidict</td>
+        <td>6.0.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>multiprocess</td>
+        <td>0.70.16</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>murmurhash</td>
+        <td>1.0.10</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>mypy-extensions</td>
+        <td>1.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>names</td>
+        <td>0.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>namex</td>
+        <td>0.0.8</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>narwhals</td>
+        <td>1.28.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>nbclient</td>
+        <td>0.10.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>nbconvert</td>
+        <td>7.16.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>nbformat</td>
+        <td>5.10.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>nest-asyncio</td>
+        <td>1.6.0</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>networkx</td>
+        <td>3.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>nltk</td>
+        <td>3.8.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>notebook</td>
+        <td>7.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>notebook-shim</td>
+        <td>0.2.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>npm</td>
+        <td>0.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>numba</td>
+        <td>0.60.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>numpy</td>
+        <td>1.24.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>nvidia-ml-py</td>
+        <td>12.560.30</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>oauth2client</td>
+        <td>4.1.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>oauthlib</td>
+        <td>3.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ollama</td>
+        <td>0.3.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>onnxruntime</td>
+        <td>1.19.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>openai</td>
+        <td>1.41.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opencv-contrib-python</td>
+        <td>4.10.0.84</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opencv-python</td>
+        <td>4.7.0.72</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opentelemetry-api</td>
+        <td>1.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opentelemetry-exporter-otlp-proto-common</td>
+        <td>1.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opentelemetry-exporter-otlp-proto-grpc</td>
+        <td>1.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opentelemetry-instrumentation</td>
+        <td>0.48b0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opentelemetry-instrumentation-asgi</td>
+        <td>0.48b0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opentelemetry-instrumentation-fastapi</td>
+        <td>0.48b0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opentelemetry-proto</td>
+        <td>1.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opentelemetry-sdk</td>
+        <td>1.27.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opentelemetry-semantic-conventions</td>
+        <td>0.48b0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>opentelemetry-util-http</td>
+        <td>0.48b0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>opt-einsum</td>
+        <td>3.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>optional-django</td>
+        <td>0.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>optree</td>
+        <td>0.12.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>orderly-set</td>
+        <td>5.2.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>orjson</td>
+        <td>3.10.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>outcome</td>
+        <td>1.3.0.post0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>outlines</td>
+        <td>0.0.46</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>overrides</td>
+        <td>7.7.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>packaging</td>
+        <td>23.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pandas</td>
+        <td>2.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pandocfilters</td>
+        <td>1.5.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>parso</td>
+        <td>0.8.4</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>partial-json-parser</td>
+        <td>0.2.1.1.post4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pdfkit</td>
+        <td>1.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pillow</td>
+        <td>10.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pip</td>
+        <td>24.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>platformdirs</td>
+        <td>4.2.2</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>plotly</td>
+        <td>6.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pluggy</td>
+        <td>1.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>posthog</td>
+        <td>3.6.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>preshed</td>
+        <td>3.0.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>prometheus-client</td>
+        <td>0.21.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>prometheus-fastapi-instrumentator</td>
+        <td>7.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>prompt-toolkit</td>
+        <td>3.0.47</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>proto-plus</td>
+        <td>1.24.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>protobuf</td>
+        <td>4.25.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>psutil</td>
+        <td>6.0.0</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pure-eval</td>
+        <td>0.2.3</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>py-cpuinfo</td>
+        <td>9.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyairports</td>
+        <td>2.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pyarrow</td>
+        <td>17.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyasn1</td>
+        <td>0.6.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pyasn1-modules</td>
+        <td>0.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>PyAutoGUI</td>
+        <td>0.9.54</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pycountry</td>
+        <td>24.6.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pycparser</td>
+        <td>2.22</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pycryptodome</td>
+        <td>3.20.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pydantic</td>
+        <td>2.9.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pydantic-core</td>
+        <td>2.23.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pydantic-settings</td>
+        <td>2.5.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pydeck</td>
+        <td>0.9.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>PyDrive</td>
+        <td>1.3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>PyGetWindow</td>
+        <td>0.0.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pygments</td>
+        <td>2.18.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pymongo</td>
+        <td>3.10.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Pympler</td>
+        <td>1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>PyMsgBox</td>
+        <td>1.0.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyparsing</td>
+        <td>3.1.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pypdf</td>
+        <td>5.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyperclip</td>
+        <td>1.8.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>PyPika</td>
+        <td>0.48.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyproject-hooks</td>
+        <td>1.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pyreadline3</td>
+        <td>3.5.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>PyRect</td>
+        <td>0.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pyscreenshot</td>
+        <td>3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>PyScreeze</td>
+        <td>0.1.29</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>PySocks</td>
+        <td>1.7.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pytesseract</td>
+        <td>0.3.13</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pytest</td>
+        <td>7.4.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>python-dateutil</td>
+        <td>2.9.0.post0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>python-dotenv</td>
+        <td>1.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>python-iso639</td>
+        <td>2024.4.27</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>python-json-logger</td>
+        <td>2.0.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>python-magic</td>
+        <td>0.4.27</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>python-rapidjson</td>
+        <td>1.20</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pytweening</td>
+        <td>1.0.7</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pytz</td>
+        <td>2024.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pytz-deprecation-shim</td>
+        <td>0.1.0.post0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>pywin32</td>
+        <td>306</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pywinpty</td>
+        <td>2.0.13</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>PyYAML</td>
+        <td>6.0.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>pyzmq</td>
+        <td>26.1.0</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>rapidfuzz</td>
+        <td>3.10.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>ray</td>
+        <td>2.37.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>razorpay</td>
+        <td>1.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>referencing</td>
+        <td>0.35.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>regex</td>
+        <td>2024.7.24</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>reportlab</td>
+        <td>4.2.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>requests</td>
+        <td>2.31.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>requests-file</td>
+        <td>2.1.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>requests-oauthlib</td>
+        <td>2.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>requests-toolbelt</td>
+        <td>1.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>rfc3339-validator</td>
+        <td>0.1.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>rfc3986-validator</td>
+        <td>0.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>rich</td>
+        <td>13.7.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>rpds-py</td>
+        <td>0.19.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>rsa</td>
+        <td>4.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>safetensors</td>
+        <td>0.4.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>scikit-image</td>
+        <td>0.24.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>scikit-learn</td>
+        <td>1.5.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>scipy</td>
+        <td>1.14.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>seaborn</td>
+        <td>0.13.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>selenium</td>
+        <td>4.21.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Send2Trash</td>
+        <td>1.8.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>sentence-transformers</td>
+        <td>3.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>sentencepiece</td>
+        <td>0.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>setuptools</td>
+        <td>65.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>six</td>
+        <td>1.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>smart-open</td>
+        <td>6.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>smmap</td>
+        <td>5.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>sniffio</td>
+        <td>1.3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>sortedcontainers</td>
+        <td>2.4.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>soupsieve</td>
+        <td>2.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>spacy</td>
+        <td>3.7.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>spacy-langdetect</td>
+        <td>0.1.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>spacy-legacy</td>
+        <td>3.0.12</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>spacy-loggers</td>
+        <td>1.0.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SQLAlchemy</td>
+        <td>2.0.32</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>srsly</td>
+        <td>2.4.8</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>stack-data</td>
+        <td>0.6.3</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>starlette</td>
+        <td>0.38.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>streamlit</td>
+        <td>1.31.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>streamlit-chat</td>
+        <td>0.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>sympy</td>
+        <td>1.13.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tabulate</td>
+        <td>0.9.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tenacity</td>
+        <td>8.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tensorboard</td>
+        <td>2.17.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tensorboard-data-server</td>
+        <td>0.7.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tensorflow</td>
+        <td>2.17.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tensorflow-intel</td>
+        <td>2.17.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tensorflow-io-gcs-filesystem</td>
+        <td>0.31.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>termcolor</td>
+        <td>2.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>terminado</td>
+        <td>0.18.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>textblob</td>
+        <td>0.18.0.post0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>thinc</td>
+        <td>8.2.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>threadpoolctl</td>
+        <td>3.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tifffile</td>
+        <td>2024.8.30</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tiktoken</td>
+        <td>0.7.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tinycss2</td>
+        <td>1.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tldextract</td>
+        <td>5.1.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tokenizers</td>
+        <td>0.14.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>toml</td>
+        <td>0.10.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>toolz</td>
+        <td>0.12.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>torch</td>
+        <td>2.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>torchvision</td>
+        <td>0.19.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tornado</td>
+        <td>6.4.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tqdm</td>
+        <td>4.66.5</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>traitlets</td>
+        <td>5.14.3</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>transformers</td>
+        <td>4.34.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>trio</td>
+        <td>0.26.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>trio-websocket</td>
+        <td>0.11.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tritonclient</td>
+        <td>2.34.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>typer</td>
+        <td>0.9.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>types-python-dateutil</td>
+        <td>2.9.0.20240906</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>typing-extensions</td>
+        <td>4.12.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>typing-inspect</td>
+        <td>0.9.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>tzdata</td>
+        <td>2024.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>tzlocal</td>
+        <td>4.3.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>unstructured</td>
+        <td>0.14.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>unstructured-client</td>
+        <td>0.25.9</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>uri-template</td>
+        <td>1.3.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>uritemplate</td>
+        <td>4.1.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>urllib3</td>
+        <td>1.26.20</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>uvicorn</td>
+        <td>0.30.6</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>vaderSentiment</td>
+        <td>3.3.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>validators</td>
+        <td>0.33.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>vercel</td>
+        <td>0.2.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>vllm</td>
+        <td>0.6.2</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>wasabi</td>
+        <td>1.1.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>watchdog</td>
+        <td>4.0.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>watchfiles</td>
+        <td>0.24.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>wcwidth</td>
+        <td>0.2.13</td>
+        <td>c:\users\thamimul ansari\appdata\roaming\python\python311\site-packages</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>weasel</td>
+        <td>0.3.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>webcolors</td>
+        <td>24.8.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>webencodings</td>
+        <td>0.5.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>websocket-client</td>
+        <td>1.8.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>websockets</td>
+        <td>13.1</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>Werkzeug</td>
+        <td>2.2.3</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>wheel</td>
+        <td>0.44.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>widgetsnbextension</td>
+        <td>4.0.13</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>wrapt</td>
+        <td>1.16.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>wsproto</td>
+        <td>1.2.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>WTForms</td>
+        <td>3.0.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>xxhash</td>
+        <td>3.5.0</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>yarl</td>
+        <td>1.9.4</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>zipp</td>
+        <td>3.20.0</td>
+        <td></td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+  
+    
+    <div id="flDebugHeaderPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>HTTP Headers</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_ACCEPT</td>
+        <td>*/*</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_ACCEPT_ENCODING</td>
+        <td>gzip, deflate</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_CONNECTION</td>
+        <td>keep-alive</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>HTTP_HOST</td>
+        <td>localhost:5000</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>HTTP_USER_AGENT</td>
+        <td>python-requests/2.31.0</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>QUERY_STRING</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>REMOTE_ADDR</td>
+        <td>127.0.0.1</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>REQUEST_METHOD</td>
+        <td>GET</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SCRIPT_NAME</td>
+        <td></td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_NAME</td>
+        <td>127.0.0.1</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_PORT</td>
+        <td>5000</td>
+      </tr>
+    
+      <tr class="flDebugEven">
+        <td>SERVER_PROTOCOL</td>
+        <td>HTTP/1.1</td>
+      </tr>
+    
+      <tr class="flDebugOdd">
+        <td>SERVER_SOFTWARE</td>
+        <td>Werkzeug/2.2.3</td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRequestVarsPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Request Vars</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          
+<h4>View information</h4>
+<table>
+  <thead>
+    <tr>
+      <th>View Function</th>
+      <th>args</th>
+      <th>kwargs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>__main__.generate_cover_letter</td>
+      <td>[]</td>
+      <td>
+        
+          None
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<h4>COOKIES Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%"/>
+    <col/>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;session&#39;</td>
+      <td>&#39;.eJzNWQtz2zYS_is43tw4mRElS7YSWedmmqudq3txmoud6XWijAciQQkRCbAEaFnx-b_ftwCpByXZfUxnzq1ji1gu9vHttwv4PrhJUm6mwgTDT_cBs_gRZMIYPhFBKzgvCl2wiVCi4FaqCXt_9mbI3mk2n01tllqdxwkTdyIqLR-ngiW6VPGQjYLxwcEoGKmLhNmpNCyRWBR30ljD8lRwI1g0FdEMq9x6kbzQEfZlEVesEDxm0jLsvdCle5RzrOXcTpnVtJRxVfI0XTCpWCbsVMcQS9NWpffD-euzy_M2-9FORTGX2K_aVipjIbfhQMim1uZm2OlMpJ2W43aks84P_OvX73QhOvkC2lUIwZm0nbmcyc6FV4KAhGt6gs8Pn1sBt-bGypziGfy75MrKZMF4BJV5Ks00EwoxgNGCR1NW6FS0GSN95LJO2MGVUBJ-n4lbkepcFK0DVsLuredD9lbELPYfSSu9nQhuy0Kw_yCEpkxdyrAXZ93-3_BLVFQxIJUFE2qCNNO77QMk-yOWZmIx10WMjBU6Y5YXE2HZFz3GRiYqZG6lVqbNXiueLr4Kt5JrQ_sYStUB9uZ5ni5o4wTmchXTvrrINRAkYFYqbhEUZkWRGfZMtCftFjO5iGQiI_b6pysGy24loNBil28ZTye6QFIy8xx6kHpsUjAzk2lqnHJxh1hIoSKBFyNvHnx5HcfwOhaxjLBtzA7eF_oL1s1BLcbMVM8jbsjSvFr0cJzKyTTFt93Y7Nl7h4MW-4DM2ZYzVdio_byN9EVpGQsGQMwM4fOf0n5fjuEsYiMtHBBIecL4LZcp1QlZ-EYXmcO-cLnKBHJCtnAWAanY5_X1VZiQazFQnnjpOl4SYKJqA5ZaTr5gUwCI0tBiSjNXjQamsXNlCBC0jStCVJrht4gIR_yonMmWa9jla62ojYEXDqGUTYohIgZtr-MvpfFGP54D936WTxHfr353K6Kp0qmeUDA23zIsA4bWsFHtvYRFA4DtAHUW6VtR3KTCAknBMPj0Mxl_hmR_HqmR-vS9LCial1wB4gV7xzNaaD6-ljZ1z79DeXK1WMrVn4EjBMQ4nWcU5k-XRbtzafB912YNbW85vHAaWiR_wXjG5kAvyZBPdznpYtkCZSYU4VnggaV6NDqxc45EoSalEsLp1TmqxpYKGihmlm2a2XI5jBEGC4IDeyj26X3KLWGFzcF7wrGn4XOXgKWkI4uQeShFlca5GAOqosXeAsQivlCfke6fUHlkbiJvoQvuGyKZtXSvW75GRS244RQbB2liOWf_WEMfPAY6QYUw2e9eI4JPCKFYhtM5gOwCGGmVyJhMviCqMRTBJZ6AzHQdiZFOUWBENWSxyZEfB6eMzxAA1M1EEaAIZNBrCzkuHRfUxAIWztqUu8sFG_NoNimooRGDUYEb7zrFkDyvCeEH1PWVw2bLG5HqMt7A-4rhXMsCdbTYmY5mYHf3xr_KsSiUsMJQjVFhNtmeoncNjaxGwLPeYa8b4p-j5xSoOaAALOUoPekbMaA6RpYS7EcpIS8hvxGCZlfSxUqHTD3qRmXvsHvEfvGdTLouj9qUMMy_RKkfI6etClCjIPVM5LLU6E-cKTFfdinHtr5RifhX9alRQEaOAl7ABEtcQ4xJGSJCdH46Cs1kVOi6kbCl9HJTiBeaWNAs0HkzZpAY7nxejAJC_vuCwg9Y0GzSohogEHvSvKoRf17VKiXnyqOWegHlpntCuek-p9ZyC_iSe7c8LV38NguIswS8EeY8gpRQt7LQyheRr-ELBpRhCTZUSKeXXKmsR9cPQesEu0Q4XoYnW3DYXw-f6xqA9VgmUxew2qIXOWbHcKBsiE-brG5KahjGd0hnwjsdi_YX42nGJwjGjBe0t4WSCUN5iQIlrxxkAJGM0KXQTEE3yjdnAELibSoORwnct2h4olHnrr_TZh5JJqR-qzyiYongY05kc2Iy7rIB5q1STa64bQBvGc2g0LFQzHNHGgTVaIqKBf5WmwtH9e5N8Ck-rCWm0QwhtMqBBxNlXOlbz0-YtGaoHXIyRoq3Gd6l4XrK1cwxeVL3aCvRoasUG6CrqPszsILmDkUWUfSYqfp5survtxKO0dtzkSIvvj2veo0LSyxNVPpehdJPHUh8Y0_KgmZqZ9oVMgOIpgvX737QUwVaEyP1Bb-1Yy2-FXec8k4D9Uh1e0fhcf9F-HJwcjhSGDtyviBE3MgYDTwW43JyUz_qvjzuH_f63e6LNTngi44ISZkGQ1uUohV4525ibnkwvA9EXHozoe8SRYVEAVEU0pJ-v3JIRo9DsSoEJGYfFfJQoPEtWozqdaT-QYGjYQgvnq96MYbRi2uS6Z7AIJFhYMIeu_yk5SUEIPPbmPy3cAt2Sl2zluRv_as7vEjVIdtgGoQUoASBOj0UUGIUPFrPCD1OOWnClJLJkhzxsMajXa2umoOXJb7R1VYdDZGrKvptVdGkuMwyXiyg-XwZq3h7CPJl-zubLg224HY4ZcnXDHYWKnhYgobObXh--pezH7-7_vn9OaMHr0bqlH4yhGLyzSgQahS4Z-hp-MnwdQqm5UQMhREWIh-v34QDJ7VapZBjiSqNygpti4gAGMbDuYzt9BtQN3pT6D604Bi6LU9D6kPim277cKXP0oj6qk4e5rYPzvzTjl-opIxdLD_Q11jHC3a_-kxfdFwIE57JdDGk8-QE6j5eHCCTGoOZbrGD70V6KyxKnb0TpcCK4cqE6KMy-fumLqBNhFNBp6Qh67ZfNJYxh2mcUP96dHTUWEHakdshO2w8z3lMHWB7YTWGhbXW5IT-W5N7WP3arvjuvrntnY_1kA0OD_O7PVYdY4nx0up91h1vv7tt4JymjaaUvgvNlMd6DhdZF9v08V1MxvzZYYtV_7e7z_d4RfhDPTS8sujJIdh5AtMj6nnFTr9CpNfqbMiOdlgPGhTFUqIHo4xOZYzcHZ8M4vHuQKzkNzWumTzt7sQfnQdhyIu9KTik8GzbWee-Fx2J_uGeKFGR0eixf-Pu8V7N_X5_t1re1LdE964IuZzEItK-KQ9xHFdij-LhlA6xO7O6rsHNSFRxu9XUFxpbkN_Ifa-_N1O93-TgWjR7vafw1F3hSYhmTTTBtCPtDSe6-504eizrg0fhtldp-4seh45nW6xNN4fSlrtC7baaV2w41mn8e8Ab0_3YTh-I24dMWlR6tEfzy2QQDZrbPo77Zmj3VnK7mm4btmFERG9FK0lS0dRNj8J5wXOQIf5trE7o-VP7Nbfb1Qe6ySDZJloHwAJn0NKAabb8XnI5EfAOyD0eNa9-A9jxC8GTwW5fvs0wk3F3htmipV09erenuxrKw-bHPX3P77NqPQ0yqr_2deWNePW2Y_Ww5fRppx5FTjvV0HRKjtaDCk5kmNW4MZiEvMnLUWdr3Te9jXUnM-0u5yFs0m0ur6uoOsKWDidoMH-_2jXDwwlaYv-tZNbn5LU1nEMLkZCh1Z8P9szgGP_8TTpEb8aYLGewZ4_saYc3_enAofUQNT6vrVSdYCtevVdXfuBGuHrN1fzVnziDn3byDdO3LfxV5q8s3OEBELae8tXpK0TVZKtJGi2illnyOlabBzTscLQLrdVNKd5YP76tZ2NDnOgcssvD3YZg_upD47IuFu4yhk6a1a2O-53CisMmQCzdZcgyPeCesrpppwutTAjLxvQXBLofLcQvpSzqCzqocNdoyGZcZ6S25o_GrnlcfTp4a4fZp2NXHXX_X2P3x3FdX1jsKszNMl9_vAzU2kyCeP1pVx5NyvE-N2npd8bgyk0XewKw9NTPILt5_BG57TUsef7ai75abEVvT4q6u5AnpaqrkiflXv909aSMv2h5Umx1D_OkaPOapn7hT01-_WfZ3Y3p_r7-y-zDw-OdZGVsNWxAIV3nsGB53-NuGZP-oDceHMfhuNsbh8cnh1HIRRSFLw-TuD8YHCW831-9sn191AqMSLGziG_cbIaV6pS0vrR9kVav7NJoC64Mj_y95X3AM4x-Nhh2T05ajgkhi0Lth4fHYe-I9brD48HwiO5F3Si6fnvqH-y8O33yjnXT5IeH_wGY_9ns.aAkS8A.dRr2dCJwW9YrzOQ2Fs93wOhq8Zg&#39;</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+<h4>SESSION Variables</h4>
+
+  
+<table>
+  <colgroup>
+    <col style="width:20%"/>
+    <col/>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;ats_tips&#39;</td>
+      <td>[&#34;Quantify accomplishments in each role.  Instead of &#39;Senior Developer,&#39; use &#39;Senior Developer: Led development of feature X resulting in a 15% increase in user engagement.&#39;&#34;, &#34;Use keywords from target job descriptions. Analyze job postings you&#39;re applying for and incorporate relevant terms (e.g., specific AWS services, ML algorithms) into your skills and experience sections.&#34;, &#34;Add a dedicated &#39;Projects&#39; section showcasing projects that highlight your skills (Python, React, AWS etc.). Include links to GitHub repositories if available.&#34;, &#39;Format the resume using a clean, ATS-friendly format (e.g., simple fonts, clear headings, no tables).  Ensure the file is saved as a PDF.&#39;, &#39;Tailor your resume to each application.  Adjust the skills and experience sections to emphasize the technologies and experiences most relevant to each specific job description.&#39;]</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;cover_letter&#39;</td>
+      <td>&#39;[Your Date]\n\n[Recipient Name]\n[Recipient Title]\n[Company Name]\n[Company Address]\n\nDear [Recipient Name],\n\nI am writing to express my keen interest in software engineering opportunities at [Company Name], as advertised on [Platform where you saw the advertisement - e.g., company website, LinkedIn].  With my five years of experience in software development, encompassing roles at both established tech companies and agile startups, I am confident I possess the skills and expertise to make a significant contribution to your team.\n\nMy background includes expertise in Python, JavaScript, and cloud technologies, specifically AWS, Docker, and Kubernetes.  As a Senior Developer at Tech Company (2021-2023), I was responsible for [briefly mention 1-2 significant accomplishments or responsibilities, quantifying them if possible.  E.g., &#34;leading the development of a new feature that resulted in a 15% increase in user engagement&#34; or &#34;managing a team of three junior developers on a critical project delivered ahead of schedule and under budget&#34;].  Prior to that, my role as a Software Engineer at Startup Inc (2019-2021) provided valuable experience in [mention a key skill or experience gained, e.g., &#34;rapid prototyping and agile development methodologies&#34;].\n\nMy skillset also includes proficiency in React, Node.js, and foundational knowledge in Machine Learning.  I am a highly motivated and results-oriented individual with a proven ability to adapt to new technologies and challenges.  I am eager to leverage my skills to contribute to a dynamic and innovative environment such as [Company Name].\n\nThank you for your time and consideration. I have attached my resume for your review and welcome the opportunity to discuss how my qualifications align with your needs.\n\nSincerely,\n\nJohn Doe\njohn.doe@example.com\n123-456-7890\n&#39;</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;payment_id&#39;</td>
+      <td>&#39;debug_payment_1745425116&#39;</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;payment_successful&#39;</td>
+      <td>True</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;resume_data&#39;</td>
+      <td>{&#39;education&#39;: &#39;Master of Computer Science, Stanford University, 2021\nBachelor of Engineering, MIT, 2019&#39;, &#39;email&#39;: &#39;john.doe@example.com&#39;, &#39;experience&#39;: &#39;Senior Developer at Tech Company (2021-2023), Software Engineer at Startup Inc (2019-2021)&#39;, &#39;linkedin&#39;: &#39;linkedin.com/in/johndoe&#39;, &#39;name&#39;: &#39;John Doe&#39;, &#39;phone&#39;: &#39;123-456-7890&#39;, &#39;plan&#39;: &#39;premium&#39;, &#39;skills&#39;: &#39;Python, JavaScript, React, Node.js, AWS, Docker, Kubernetes, Machine Learning&#39;, &#39;summary&#39;: &#39;Experienced software engineer with expertise in Python, JavaScript, and cloud technologies.&#39;, &#39;template&#39;: &#39;modern&#39;}</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;resume_html&#39;</td>
+      <td>&#39;&lt;!DOCTYPE html&gt;\n&lt;html lang=&#34;en&#34;&gt;\n&lt;head&gt;\n    &lt;meta charset=&#34;UTF-8&#34;&gt;\n    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;\n    &lt;title&gt;John Doe - Resume&lt;/title&gt;\n    &lt;style&gt;\n        body {\n            font-family: \&#39;Segoe UI\&#39;, Roboto, \&#39;Helvetica Neue\&#39;, sans-serif;\n            line-height: 1.6;\n            color: #333;\n            margin: 0;\n            padding: 0;\n            background-color: #f9f9f9;\n        }\n        .resume {\n            max-width: 800px;\n            margin: 40px auto;\n            padding: 40px;\n            background-color: white;\n            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            margin-bottom: 30px;\n            border-bottom: 2px solid #3498db;\n            padding-bottom: 20px;\n        }\n        h1 {\n            font-size: 36px;\n            margin: 0 0 10px;\n            color: #2c3e50;\n        }\n        .contact {\n            font-size: 14px;\n            color: #555;\n        }\n        a {\n            color: #3498db;\n            text-decoration: none;\n        }\n        a:hover {\n            text-decoration: underline;\n        }\n        section {\n            margin-bottom: 25px;\n        }\n        h2 {\n            color: #3498db;\n            font-size: 22px;\n            border-bottom: 1px solid #eee;\n            padding-bottom: 10px;\n            margin-bottom: 15px;\n        }\n        h3 {\n            font-size: 18px;\n            margin: 0 0 5px;\n        }\n        .job-title, .institution {\n            font-weight: bold;\n            color: #2c3e50;\n        }\n        .date {\n            font-style: italic;\n            color: #7f8c8d;\n            font-size: 14px;\n            margin-bottom: 10px;\n        }\n        .skills {\n            display: flex;\n            flex-wrap: wrap;\n            gap: 10px;\n        }\n        .skill {\n            background-color: #f1f8fe;\n            border-radius: 3px;\n            padding: 5px 10px;\n            font-size: 14px;\n            border: 1px solid #d6eaf8;\n        }\n        @media print {\n            body {\n                background-color: white;\n            }\n            .resume {\n                box-shadow: none;\n                margin: 0;\n                padding: 20px;\n            }\n        }\n    &lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n    &lt;div class=&#34;resume&#34;&gt;\n        &lt;div class=&#34;header&#34;&gt;\n            &lt;h1&gt;John Doe&lt;/h1&gt;\n            &lt;div class=&#34;contact&#34;&gt;\n                &lt;span&gt;john.doe@example.com&lt;/span&gt; | &lt;span&gt;123-456-7890&lt;/span&gt; | &lt;a href=&#34;https://linkedin.com/in/johndoe&#34; target=&#34;_blank&#34;&gt;linkedin.com/in/johndoe&lt;/a&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Summary&lt;/h2&gt;\n            &lt;p&gt;Experienced software engineer with expertise in Python, JavaScript, and cloud technologies.&lt;/p&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Experience&lt;/h2&gt;\n            \n&lt;div class=&#34;experience-item&#34;&gt;\n    &lt;h3 class=&#34;job-title&#34;&gt;Senior Developer&lt;/h3&gt;\n    &lt;div class=&#34;company&#34;&gt;Tech Company&lt;/div&gt;\n    &lt;div class=&#34;date&#34;&gt;2021-2023&lt;/div&gt;\n    &lt;p&gt;Responsible for designing, developing, and maintaining software solutions that meet business requirements and user needs.&lt;/p&gt;\n&lt;/div&gt;\n\n&lt;div class=&#34;experience-item&#34;&gt;\n    &lt;h3 class=&#34;job-title&#34;&gt;Software Engineer&lt;/h3&gt;\n    &lt;div class=&#34;company&#34;&gt;Startup Inc&lt;/div&gt;\n    &lt;div class=&#34;date&#34;&gt;2019-2021&lt;/div&gt;\n    &lt;p&gt;Responsible for designing, developing, and maintaining software solutions that meet business requirements and user needs.&lt;/p&gt;\n&lt;/div&gt;\n\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Education&lt;/h2&gt;\n            &lt;div&gt;\n                &lt;div class=&#34;institution&#34;&gt;Master of Computer Science, Stanford University, 2021\nBachelor of Engineering, MIT, 2019&lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Skills&lt;/h2&gt;\n            &lt;div class=&#34;skills&#34;&gt;\n                &lt;div class=&#34;skills&#34;&gt;\n    &lt;div class=&#34;skill&#34;&gt;Python&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;JavaScript&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;React&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Node.js&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;AWS&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Docker&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Kubernetes&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Machine Learning&lt;/div&gt;\n&lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Projects&lt;/h2&gt;\n            &lt;p&gt;{{projects}}&lt;/p&gt;\n        &lt;/section&gt;\n    &lt;/div&gt;\n&lt;/body&gt;\n&lt;/html&gt; &#39;</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;resume_id&#39;</td>
+      <td>&#39;f582b84d-b12b-490c-aecc-70fd5883fa55&#39;</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;resume_template&#39;</td>
+      <td>&#39;modern&#39;</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;selected_color&#39;</td>
+      <td>&#39;#3498db&#39;</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;selected_plan&#39;</td>
+      <td>&#39;premium&#39;</td>
+    </tr>
+    
+    <tr class="flDebugOdd">
+      <td>&#39;selected_template&#39;</td>
+      <td>&#39;modern&#39;</td>
+    </tr>
+    
+    <tr class="flDebugEven">
+      <td>&#39;transaction&#39;</td>
+      <td>{&#39;amount&#39;: 199, &#39;date&#39;: &#39;2025-04-23 21:48:36&#39;, &#39;order_id&#39;: &#39;debug_order_1745425116&#39;, &#39;payment_id&#39;: &#39;debug_payment_1745425116&#39;, &#39;plan&#39;: &#39;premium&#39;}</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+
+
+
+
+<h4>GET Variables</h4>
+
+  
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+
+
+
+<h4>POST Variables</h4>
+
+  
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugConfigVarsPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Config</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr class="flDebugOdd">
+                <td>APPLICATION_ROOT</td>
+                <td><code>&#39;/&#39;</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_ENABLED</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_HOSTS</td>
+                <td><code>()</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>DEBUG_TB_INTERCEPT_REDIRECTS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>DEBUG_TB_PANELS</td>
+                <td><code>(&#39;flask_debugtoolbar.panels.versions.VersionDebugPanel&#39;, &#39;flask_debugtoolbar.panels.timer.TimerDebugPanel&#39;, &#39;flask_debugtoolbar.panels.headers.HeaderDebugPanel&#39;, &#39;flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel&#39;, &#39;flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel&#39;, &#39;flask_debugtoolbar.panels.template.TemplateDebugPanel&#39;, &#39;flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel&#39;, &#39;flask_debugtoolbar.panels.logger.LoggingPanel&#39;, &#39;flask_debugtoolbar.panels.route_list.RouteListDebugPanel&#39;, &#39;flask_debugtoolbar.panels.profiler.ProfilerDebugPanel&#39;, &#39;flask_debugtoolbar.panels.g.GDebugPanel&#39;)</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>ENV</td>
+                <td><code>&#39;production&#39;</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>EXPLAIN_TEMPLATE_LOADING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSON_AS_ASCII</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSON_SORT_KEYS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>JSONIFY_MIMETYPE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>JSONIFY_PRETTYPRINT_REGULAR</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>MAX_CONTENT_LENGTH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>MAX_COOKIE_SIZE</td>
+                <td><code>4093</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PERMANENT_SESSION_LIFETIME</td>
+                <td><code>datetime.timedelta(days=31)</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>PREFERRED_URL_SCHEME</td>
+                <td><code>&#39;http&#39;</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>PROPAGATE_EXCEPTIONS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SECRET_KEY</td>
+                <td><code>&#39;your_secret_key_here&#39;</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SEND_FILE_MAX_AGE_DEFAULT</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SERVER_NAME</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_DOMAIN</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_HTTPONLY</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_NAME</td>
+                <td><code>&#39;session&#39;</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_PATH</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_COOKIE_SAMESITE</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>SESSION_COOKIE_SECURE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>SESSION_REFRESH_EACH_REQUEST</td>
+                <td><code>True</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TEMPLATES_AUTO_RELOAD</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TESTING</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>TRAP_BAD_REQUEST_ERRORS</td>
+                <td><code>None</code></td>
+            </tr>
+        
+            <tr class="flDebugOdd">
+                <td>TRAP_HTTP_EXCEPTIONS</td>
+                <td><code>False</code></td>
+            </tr>
+        
+            <tr class="flDebugEven">
+                <td>USE_X_SENDFILE</td>
+                <td><code>False</code></td>
+            </tr>
+        
+    </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugTemplatePanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Templates</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          
+  
+  
+    <h4>cover_letter.html</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="flDebugOdd">
+          <td>cover_letter</td>
+          <td>&#39;[Your Date]\n\n[Recipient Name]\n[Recipient Title]\n[Company Name]\n[Company Address]\n\nDear [Recipient Name],\n\nI am writing to express my keen interest in software engineering opportunities at [Company Name], as advertised on [Platform where you saw the advertisement - e.g., company website, LinkedIn].  With my five years of experience in software development, encompassing roles at both established tech companies and agile startups, I am confident I possess the skills and expertise to make a significant contribution to your team.\n\nMy background includes expertise in Python, JavaScript, and cloud technologies, specifically AWS, Docker, and Kubernetes.  As a Senior Developer at Tech Company (2021-2023), I was responsible for [briefly mention 1-2 significant accomplishments or responsibilities, quantifying them if possible.  E.g., &#34;leading the development of a new feature that resulted in a 15% increase in user engagement&#34; or &#34;managing a team of three junior developers on a critical project delivered ahead of schedule and under budget&#34;].  Prior to that, my role as a Software Engineer at Startup Inc (2019-2021) provided valuable experience in [mention a key skill or experience gained, e.g., &#34;rapid prototyping and agile development methodologies&#34;].\n\nMy skillset also includes proficiency in React, Node.js, and foundational knowledge in Machine Learning.  I am a highly motivated and results-oriented individual with a proven ability to adapt to new technologies and challenges.  I am eager to leverage my skills to contribute to a dynamic and innovative environment such as [Company Name].\n\nThank you for your time and consideration. I have attached my resume for your review and welcome the opportunity to discuss how my qualifications align with your needs.\n\nSincerely,\n\nJohn Doe\njohn.doe@example.com\n123-456-7890\n&#39;</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>g</td>
+          <td>&lt;flask.g of &#39;app&#39;&gt;</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>name</td>
+          <td>&#39;John Doe&#39;</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>request</td>
+          <td>&lt;Request &#39;http://localhost:5000/generate-cover-letter&#39; [GET]&gt;</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>session</td>
+          <td>&lt;SecureCookieSession {&#39;ats_tips&#39;: [&#34;Quantify accomplishments in each role.  Instead of &#39;Senior Developer,&#39; use &#39;Senior Developer: Led development of feature X resulting in a 15% increase in user engagement.&#39;&#34;, &#34;Use keywords from target job descriptions. Analyze job postings you&#39;re applying for and incorporate relevant terms (e.g., specific AWS services, ML algorithms) into your skills and experience sections.&#34;, &#34;Add a dedicated &#39;Projects&#39; section showcasing projects that highlight your skills (Python, React, AWS etc.). Include links to GitHub repositories if available.&#34;, &#39;Format the resume using a clean, ATS-friendly format (e.g., simple fonts, clear headings, no tables).  Ensure the file is saved as a PDF.&#39;, &#39;Tailor your resume to each application.  Adjust the skills and experience sections to emphasize the technologies and experiences most relevant to each specific job description.&#39;], &#39;cover_letter&#39;: &#39;[Your Date]\n\n[Recipient Name]\n[Recipient Title]\n[Company Name]\n[Company Address]\n\nDear [Recipient Name],\n\nI am writing to express my keen interest in software engineering opportunities at [Company Name], as advertised on [Platform where you saw the advertisement - e.g., company website, LinkedIn].  With my five years of experience in software development, encompassing roles at both established tech companies and agile startups, I am confident I possess the skills and expertise to make a significant contribution to your team.\n\nMy background includes expertise in Python, JavaScript, and cloud technologies, specifically AWS, Docker, and Kubernetes.  As a Senior Developer at Tech Company (2021-2023), I was responsible for [briefly mention 1-2 significant accomplishments or responsibilities, quantifying them if possible.  E.g., &#34;leading the development of a new feature that resulted in a 15% increase in user engagement&#34; or &#34;managing a team of three junior developers on a critical project delivered ahead of schedule and under budget&#34;].  Prior to that, my role as a Software Engineer at Startup Inc (2019-2021) provided valuable experience in [mention a key skill or experience gained, e.g., &#34;rapid prototyping and agile development methodologies&#34;].\n\nMy skillset also includes proficiency in React, Node.js, and foundational knowledge in Machine Learning.  I am a highly motivated and results-oriented individual with a proven ability to adapt to new technologies and challenges.  I am eager to leverage my skills to contribute to a dynamic and innovative environment such as [Company Name].\n\nThank you for your time and consideration. I have attached my resume for your review and welcome the opportunity to discuss how my qualifications align with your needs.\n\nSincerely,\n\nJohn Doe\njohn.doe@example.com\n123-456-7890\n&#39;, &#39;payment_id&#39;: &#39;debug_payment_1745425116&#39;, &#39;payment_successful&#39;: True, &#39;resume_data&#39;: {&#39;education&#39;: &#39;Master of Computer Science, Stanford University, 2021\nBachelor of Engineering, MIT, 2019&#39;, &#39;email&#39;: &#39;john.doe@example.com&#39;, &#39;experience&#39;: &#39;Senior Developer at Tech Company (2021-2023), Software Engineer at Startup Inc (2019-2021)&#39;, &#39;linkedin&#39;: &#39;linkedin.com/in/johndoe&#39;, &#39;name&#39;: &#39;John Doe&#39;, &#39;phone&#39;: &#39;123-456-7890&#39;, &#39;plan&#39;: &#39;premium&#39;, &#39;skills&#39;: &#39;Python, JavaScript, React, Node.js, AWS, Docker, Kubernetes, Machine Learning&#39;, &#39;summary&#39;: &#39;Experienced software engineer with expertise in Python, JavaScript, and cloud technologies.&#39;, &#39;template&#39;: &#39;modern&#39;}, &#39;resume_html&#39;: &#39;&lt;!DOCTYPE html&gt;\n&lt;html lang=&#34;en&#34;&gt;\n&lt;head&gt;\n    &lt;meta charset=&#34;UTF-8&#34;&gt;\n    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;\n    &lt;title&gt;John Doe - Resume&lt;/title&gt;\n    &lt;style&gt;\n        body {\n            font-family: \&#39;Segoe UI\&#39;, Roboto, \&#39;Helvetica Neue\&#39;, sans-serif;\n            line-height: 1.6;\n            color: #333;\n            margin: 0;\n            padding: 0;\n            background-color: #f9f9f9;\n        }\n        .resume {\n            max-width: 800px;\n            margin: 40px auto;\n            padding: 40px;\n            background-color: white;\n            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            margin-bottom: 30px;\n            border-bottom: 2px solid #3498db;\n            padding-bottom: 20px;\n        }\n        h1 {\n            font-size: 36px;\n            margin: 0 0 10px;\n            color: #2c3e50;\n        }\n        .contact {\n            font-size: 14px;\n            color: #555;\n        }\n        a {\n            color: #3498db;\n            text-decoration: none;\n        }\n        a:hover {\n            text-decoration: underline;\n        }\n        section {\n            margin-bottom: 25px;\n        }\n        h2 {\n            color: #3498db;\n            font-size: 22px;\n            border-bottom: 1px solid #eee;\n            padding-bottom: 10px;\n            margin-bottom: 15px;\n        }\n        h3 {\n            font-size: 18px;\n            margin: 0 0 5px;\n        }\n        .job-title, .institution {\n            font-weight: bold;\n            color: #2c3e50;\n        }\n        .date {\n            font-style: italic;\n            color: #7f8c8d;\n            font-size: 14px;\n            margin-bottom: 10px;\n        }\n        .skills {\n            display: flex;\n            flex-wrap: wrap;\n            gap: 10px;\n        }\n        .skill {\n            background-color: #f1f8fe;\n            border-radius: 3px;\n            padding: 5px 10px;\n            font-size: 14px;\n            border: 1px solid #d6eaf8;\n        }\n        @media print {\n            body {\n                background-color: white;\n            }\n            .resume {\n                box-shadow: none;\n                margin: 0;\n                padding: 20px;\n            }\n        }\n    &lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n    &lt;div class=&#34;resume&#34;&gt;\n        &lt;div class=&#34;header&#34;&gt;\n            &lt;h1&gt;John Doe&lt;/h1&gt;\n            &lt;div class=&#34;contact&#34;&gt;\n                &lt;span&gt;john.doe@example.com&lt;/span&gt; | &lt;span&gt;123-456-7890&lt;/span&gt; | &lt;a href=&#34;https://linkedin.com/in/johndoe&#34; target=&#34;_blank&#34;&gt;linkedin.com/in/johndoe&lt;/a&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Summary&lt;/h2&gt;\n            &lt;p&gt;Experienced software engineer with expertise in Python, JavaScript, and cloud technologies.&lt;/p&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Experience&lt;/h2&gt;\n            \n&lt;div class=&#34;experience-item&#34;&gt;\n    &lt;h3 class=&#34;job-title&#34;&gt;Senior Developer&lt;/h3&gt;\n    &lt;div class=&#34;company&#34;&gt;Tech Company&lt;/div&gt;\n    &lt;div class=&#34;date&#34;&gt;2021-2023&lt;/div&gt;\n    &lt;p&gt;Responsible for designing, developing, and maintaining software solutions that meet business requirements and user needs.&lt;/p&gt;\n&lt;/div&gt;\n\n&lt;div class=&#34;experience-item&#34;&gt;\n    &lt;h3 class=&#34;job-title&#34;&gt;Software Engineer&lt;/h3&gt;\n    &lt;div class=&#34;company&#34;&gt;Startup Inc&lt;/div&gt;\n    &lt;div class=&#34;date&#34;&gt;2019-2021&lt;/div&gt;\n    &lt;p&gt;Responsible for designing, developing, and maintaining software solutions that meet business requirements and user needs.&lt;/p&gt;\n&lt;/div&gt;\n\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Education&lt;/h2&gt;\n            &lt;div&gt;\n                &lt;div class=&#34;institution&#34;&gt;Master of Computer Science, Stanford University, 2021\nBachelor of Engineering, MIT, 2019&lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Skills&lt;/h2&gt;\n            &lt;div class=&#34;skills&#34;&gt;\n                &lt;div class=&#34;skills&#34;&gt;\n    &lt;div class=&#34;skill&#34;&gt;Python&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;JavaScript&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;React&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Node.js&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;AWS&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Docker&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Kubernetes&lt;/div&gt;\n    &lt;div class=&#34;skill&#34;&gt;Machine Learning&lt;/div&gt;\n&lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/section&gt;\n        \n        &lt;section&gt;\n            &lt;h2&gt;Projects&lt;/h2&gt;\n            &lt;p&gt;{{projects}}&lt;/p&gt;\n        &lt;/section&gt;\n    &lt;/div&gt;\n&lt;/body&gt;\n&lt;/html&gt; &#39;, &#39;resume_id&#39;: &#39;f582b84d-b12b-490c-aecc-70fd5883fa55&#39;, &#39;resume_template&#39;: &#39;modern&#39;, &#39;selected_color&#39;: &#39;#3498db&#39;, &#39;selected_plan&#39;: &#39;premium&#39;, &#39;selected_template&#39;: &#39;modern&#39;, &#39;transaction&#39;: {&#39;amount&#39;: 199, &#39;date&#39;: &#39;2025-04-23 21:48:36&#39;, &#39;order_id&#39;: &#39;debug_order_1745425116&#39;, &#39;payment_id&#39;: &#39;debug_payment_1745425116&#39;, &#39;plan&#39;: &#39;premium&#39;}}&gt;</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugSQLAlchemyPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>SQLAlchemy queries</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <h4>Queries Unavailable</h4>
+
+<p>
+  The toolbar was unable to fetch the SQLAlchemy queries for this request.
+  To enable the SQLAlchemy query display, please:
+</p>
+
+<ol>
+  
+  <li>
+    <h5>Install required libraries:</h5>
+    <ul>
+      <li>Flask-SQLAlchemy</li>
+    </ul>
+  </li>
+  
+
+  
+  <li>
+    <h5>Configure Flask-SQLAlchemy:</h5>
+    <p>
+      The Flask-SQLAlchemy extension needs to be configured for this application.
+      Please see the <a href="https://flask-sqlalchemy.palletsprojects.com/en/master/quickstart/">
+      Flask-SQLAlchemy documentation</a> for details.
+    </p>
+  </li>
+  
+
+  
+</ol>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugLoggingPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Log Messages</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          
+  <p>No messages logged.</p>
+
+
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugRouteListPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Route List</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <table>
+  <thead>
+    <tr>
+      <th>URL route</th>
+      <th>Endpoint name</th>
+      <th>HTTP methods</th>
+      <th>Is alias</th>
+      <th>Redirect to</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      
+        <tr>
+          <td>/</td>
+          <td>home</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/ats-optimize</td>
+          <td>ats_optimize</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/blog</td>
+          <td>blog</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/career-advice</td>
+          <td>career_advice</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/change-color/&lt;color&gt;</td>
+          <td>change_color</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/change-template/&lt;template_name&gt;</td>
+          <td>change_template</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/debug/generate-variant</td>
+          <td>debug_generate_variant</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/debug/simulate-payment</td>
+          <td>debug_simulate_payment</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/debug/view-variants</td>
+          <td>debug_view_variants</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/download-cover-letter</td>
+          <td>download_cover_letter</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/download-resume</td>
+          <td>download_resume</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/faq</td>
+          <td>faq</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/generate-cover-letter</td>
+          <td>generate_cover_letter</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/generate-resume</td>
+          <td>generate_resume</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/payment</td>
+          <td>payment</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/payment-success</td>
+          <td>payment_success</td>
+          <td>OPTIONS, POST</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/preview-resume</td>
+          <td>preview_resume</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/pricing</td>
+          <td>pricing</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/resume-form</td>
+          <td>resume_form</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/resume-tips</td>
+          <td>resume_tips</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/static/&lt;path:filename&gt;</td>
+          <td>static</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+        <tr>
+          <td>/templates</td>
+          <td>templates</td>
+          <td>GET, HEAD, OPTIONS</td>
+          <td>False</td>
+          <td>None</td>
+        </tr>
+      
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebugProfilerPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>Profiler not active</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          The profiler is not activated, activate it to use it
+        </div>
+      </div>
+    </div>
+    
+  
+    
+    <div id="flDebuggPanel-content" class="flDebugPanelContentParent">
+      <div class="flDebugPanelTitle">
+        <a href="" class="flDebugClose">Close</a>
+        <h3>flask.g content</h3>
+      </div>
+      <div class="flDebugPanelContent">
+        <div class="flDebugScroll">
+          <table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      <tr class="flDebugOdd">
+        <td>debug_toolbar</td>
+        <td>&lt;flask_debugtoolbar.DebugToolbarExtension object at 0x000001F53500AF50&gt;</td>
+      </tr>
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+    
+  
+  <div id="flDebugWindow" class="flDebugPanelContentParent"></div>
+</div></body>
+</html> 

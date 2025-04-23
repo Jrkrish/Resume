@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">Complete Your Purchase</h1>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-6 pb-4 border-b border-gray-200">Order Summary</h2>
+            
+            <div class="mb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">{{ plan.name }} Plan</span>
+                    <span class="font-semibold">₹{{ plan.price }}</span>
+                </div>
+                <div class="flex justify-between text-sm text-gray-500 mb-4">
+                    <span>Features:</span>
+                    <span></span>
+                </div>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6 pl-6">
+                    {% for feature in plan.features %}
+                    <li class="list-disc">{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="flex justify-between pt-4 border-t border-gray-200">
+                    <span class="font-semibold">Total</span>
+                    <span class="font-semibold">₹{{ plan.price }}</span>
+                </div>
+            </div>
+            
+            <button id="rzp-button" class="w-full bg-indigo-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300">
+                Pay Now
+            </button>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500 mt-2">Secure payment powered by Razorpay</p>
+                <p class="text-xs text-gray-400 mt-1">(Test Mode - No real money will be charged)</p>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg border border-gray-200 p-6">
+            <h3 class="font-semibold mb-4">Why Choose Our {{ plan.name }} Plan?</h3>
+            <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>ATS-optimized resume designed for maximum visibility to recruiters</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Professional formatting that stands out from generic templates</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>AI-powered content that highlights your strengths effectively</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Instant PDF download ready for job applications</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Debug Info -->
+        <div class="mt-8 p-4 bg-gray-100 rounded text-xs">
+            <p>Debug Info:</p>
+            <p>Key ID: {{ key_id }}</p>
+            <p>Order ID: {{ order.id }}</p>
+            <p>Amount: {{ order.amount }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Payment page loaded");
+        
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": "{{ order.amount }}",
+            "currency": "{{ order.currency }}",
+            "name": "ResumeAI",
+            "description": "{{ plan.name }} Plan",
+            "order_id": "{{ order.id }}",
+            "handler": function (response){
+                console.log("Payment successful, redirecting...");
+                // Create a hidden form and submit for server-side verification
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ url_for("payment_success") }}';
+                
+                var inputPaymentId = document.createElement('input');
+                inputPaymentId.type = 'hidden';
+                inputPaymentId.name = 'razorpay_payment_id';
+                inputPaymentId.value = response.razorpay_payment_id;
+                form.appendChild(inputPaymentId);
+                
+                var inputOrderId = document.createElement('input');
+                inputOrderId.type = 'hidden';
+                inputOrderId.name = 'razorpay_order_id';
+                inputOrderId.value = response.razorpay_order_id;
+                form.appendChild(inputOrderId);
+                
+                var inputSignature = document.createElement('input');
+                inputSignature.type = 'hidden';
+                inputSignature.name = 'razorpay_signature';
+                inputSignature.value = response.razorpay_signature;
+                form.appendChild(inputSignature);
+                
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "prefill": {
+                "name": "",
+                "email": "",
+                "contact": ""
+            },
+            "theme": {
+                "color": "#4f46e5"
+            }
+        };
+        
+        // Print debug info
+        console.log("Razorpay options:", options);
+        
+        var rzp = new Razorpay(options);
+        document.getElementById('rzp-button').onclick = function(e){
+            console.log("Pay button clicked");
+            rzp.open();
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %} 

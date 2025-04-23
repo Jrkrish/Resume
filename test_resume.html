@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe - Resume</title>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f5f1;
+        }
+        .resume {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 50px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8e8e8;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 15px;
+            color: #2a2a2a;
+            font-weight: normal;
+        }
+        .contact {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+        a {
+            color: #8e7057;
+            text-decoration: none;
+        }
+        a:hover {
+            border-bottom: 1px dotted #8e7057;
+        }
+        section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        h2 {
+            color: #8e7057;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        h3 {
+            font-size: 18px;
+            margin: 0 0 5px;
+            color: #2a2a2a;
+        }
+        .job-title, .institution {
+            font-weight: bold;
+            color: #2a2a2a;
+        }
+        .date {
+            font-style: italic;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .skills-list {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .skills-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        .skills-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #8e7057;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .resume {
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume">
+        <div class="header">
+            <h1>John Doe</h1>
+            <div class="contact">
+                <span>john.doe@example.com</span> • <span>555-123-4567</span> • <a href="https://linkedin.com/in/johndoe" target="_blank">linkedin.com/in/johndoe</a>
+            </div>
+        </div>
+        
+        <section>
+            <h2>Professional Summary</h2>
+            <p>Experienced software developer with 5 years of experience in web development.</p>
+        </section>
+        
+        <section>
+            <h2>Professional Experience</h2>
+            
+<div class="experience-item">
+    <h3 class="job-title">Software Developer</h3>
+    <div class="company">ABC Corp</div>
+    <div class="date">2018-2022</div>
+    <p>Responsible for designing, developing, and maintaining software solutions.</p>
+</div>
+
+<div class="experience-item">
+    <h3 class="job-title">Senior Developer</h3>
+    <div class="company">XYZ Inc</div>
+    <div class="date">2022-Present</div>
+    <p>Responsible for designing, developing, and maintaining software solutions.</p>
+</div>
+
+        </section>
+        
+        <section>
+            <h2>Education</h2>
+            <div>
+                <div class="institution">Bachelor of Science in Computer Science, XYZ University, 2018</div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Skills</h2>
+            <div>
+                <div class="skills-container">
+    <span class="skill-tag">Python</span>
+    <span class="skill-tag">JavaScript</span>
+    <span class="skill-tag">React</span>
+    <span class="skill-tag">Node.js</span>
+    <span class="skill-tag">SQL</span>
+    <span class="skill-tag">AWS</span>
+</div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Notable Projects</h2>
+            <p>Developed an e-commerce platform, Created a task management application</p>
+        </section>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .template-card {
+        transition: all 0.3s ease;
+    }
+    .template-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    .template-preview {
+        height: 300px;
+        overflow: hidden;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+    .template-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .template-card:hover .template-preview img {
+        transform: scale(1.05);
+    }
+    .color-swatch {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .color-swatch:hover {
+        transform: scale(1.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Resume Templates</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Choose from our professionally designed templates to create a standout resume that gets you noticed by recruiters.</p>
+    </div>
+    
+    <!-- Templates Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for template_id, template in templates.items() %}
+        <div class="template-card bg-white rounded-lg shadow-md overflow-hidden" data-aos="fade-up">
+            <div class="template-preview">
+                <img src="{{ template.preview_img }}" alt="{{ template.name }} Template" class="w-full">
+            </div>
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ template.name }}</h3>
+                <p class="text-gray-600 mb-6">{{ template.description }}</p>
+                
+                <!-- Color options -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-medium text-gray-500 mb-3">Available Colors</h4>
+                    <div class="flex space-x-2">
+                        {% for color in template.colors %}
+                        <div class="color-swatch" style="background-color: {{ color }}"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Plans that include this template -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-medium text-gray-500 mb-3">Available In</h4>
+                    <div class="flex flex-wrap gap-2">
+                        {% if template_id == 'modern' %}
+                        <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded">Free</span>
+                        {% endif %}
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">Basic</span>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded">Pro</span>
+                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded">Premium</span>
+                    </div>
+                </div>
+                
+                <!-- CTA -->
+                <a href="{{ url_for('resume_form', template=template_id, plan='basic') }}" class="block w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-center font-medium py-3 px-4 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition duration-300">
+                    Use This Template
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Call to action -->
+    <div class="mt-20 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Ready to create your professional resume?</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">Choose a template and start creating your resume in minutes with our AI-powered resume generator.</p>
+        <a href="{{ url_for('resume_form', plan='basic') }}" class="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+            Get Started Now
+        </a>
+    </div>
+</main>
+{% endblock %} 

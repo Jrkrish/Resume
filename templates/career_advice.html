@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Career Advice</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Expert guidance to help you navigate your career path and land your dream job</p>
+    </div>
+    
+    <!-- Featured Article -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-16" data-aos="fade-up">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <div class="p-10 flex flex-col justify-center">
+                <span class="text-sm font-semibold text-violet-600 mb-2">FEATURED ARTICLE</span>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">The Ultimate Guide to Acing Your Job Interview</h2>
+                <p class="text-gray-600 mb-6">Prepare for success with our comprehensive guide covering everything from research to follow-up. Learn how to make a lasting impression and differentiate yourself from other candidates.</p>
+                <a href="{{ url_for('blog') }}" class="inline-flex items-center font-medium text-violet-600 hover:text-violet-800">
+                    Read More
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+            <div class="bg-gray-200">
+                <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Job Interview" class="w-full h-full object-cover" />
+            </div>
+        </div>
+    </div>
+    
+    <!-- Career Articles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <!-- Article 1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up">
+            <div class="h-48 bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1586473219010-2ffc57b0d282?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Networking" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-semibold text-violet-600 mb-1 block">NETWORKING</span>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Building a Professional Network That Works</h3>
+                <p class="text-gray-600 mb-4">Learn how to build meaningful professional relationships that can open doors to new opportunities throughout your career.</p>
+                <a href="{{ url_for('blog') }}" class="text-violet-600 font-medium hover:text-violet-800">Read Article</a>
+            </div>
+        </div>
+        
+        <!-- Article 2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up" data-aos-delay="100">
+            <div class="h-48 bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Salary Negotiation" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-semibold text-violet-600 mb-1 block">SALARY</span>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">The Art of Salary Negotiation</h3>
+                <p class="text-gray-600 mb-4">Discover proven strategies for negotiating your salary and benefits package without compromising your relationship with the employer.</p>
+                <a href="{{ url_for('blog') }}" class="text-violet-600 font-medium hover:text-violet-800">Read Article</a>
+            </div>
+        </div>
+        
+        <!-- Article 3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-aos="fade-up" data-aos-delay="200">
+            <div class="h-48 bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1434626881859-194d67b2b86f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Remote Work" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
+            </div>
+            <div class="p-6">
+                <span class="text-xs font-semibold text-violet-600 mb-1 block">REMOTE WORK</span>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Thriving in a Remote Work Environment</h3>
+                <p class="text-gray-600 mb-4">Tips for staying productive, maintaining work-life balance, and advancing your career while working remotely.</p>
+                <a href="{{ url_for('blog') }}" class="text-violet-600 font-medium hover:text-violet-800">Read Article</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Career Development Grid -->
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">Career Development Resources</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <!-- Resource 1 -->
+        <div class="bg-indigo-50 rounded-xl p-8" data-aos="fade-up">
+            <div class="flex items-start mb-6">
+                <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                    <i class="fas fa-laptop-code text-indigo-600 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Skill Development</h3>
+                    <p class="text-gray-600">Continuously improving your skills is essential for career growth in today's rapidly changing job market.</p>
+                </div>
+            </div>
+            <ul class="space-y-3 pl-12">
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Top Skills Employers Look For in 2025</a>
+                </li>
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Free and Low-Cost Learning Resources</a>
+                </li>
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Creating a Personal Development Plan</a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Resource 2 -->
+        <div class="bg-indigo-50 rounded-xl p-8" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-start mb-6">
+                <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                    <i class="fas fa-user-tie text-indigo-600 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Personal Branding</h3>
+                    <p class="text-gray-600">Your personal brand differentiates you from other professionals and helps you stand out to potential employers.</p>
+                </div>
+            </div>
+            <ul class="space-y-3 pl-12">
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Optimizing Your LinkedIn Profile</a>
+                </li>
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Building a Professional Online Presence</a>
+                </li>
+                <li class="flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-indigo-600 transition-colors">Crafting Your Elevator Pitch</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Career Coaching CTA -->
+    <div class="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl p-10 text-white text-center" data-aos="fade-up">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4">Need Personalized Career Guidance?</h2>
+            <p class="text-xl mb-8">Upgrade to our Premium plan for one-on-one career coaching sessions with industry experts.</p>
+            <a href="{{ url_for('resume_form', plan='premium') }}" class="inline-block bg-white text-indigo-600 font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                Get Premium Access
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %} 

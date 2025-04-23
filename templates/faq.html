@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .faq-item {
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .faq-item:last-child {
+        border-bottom: none;
+    }
+    .faq-question {
+        cursor: pointer;
+    }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .faq-item.active .faq-answer {
+        max-height: 1000px;
+        opacity: 1;
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+    }
+    .faq-icon {
+        transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Find answers to common questions about our AI Resume Generator</p>
+    </div>
+    
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <!-- General Questions -->
+        <div class="p-6 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
+            <h2 class="text-xl font-bold">General Questions</h2>
+        </div>
+        
+        <div class="faq-list p-6">
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">How does the AI Resume Generator work?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Our AI Resume Generator uses advanced artificial intelligence to create professional, ATS-friendly resumes in minutes. You simply input your information, and our AI analyzes it to generate optimized content, format it professionally, and create a ready-to-download PDF.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Is my data secure with your service?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Yes, we take data security very seriously. All your information is encrypted and we do not share your personal data with third parties. We only use your information to generate your resume and provide our services to you.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">What makes your resumes ATS-friendly?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Our resumes are designed to pass through Applicant Tracking Systems (ATS) by:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li>Using clean, standard formatting that ATS software can easily parse</li>
+                        <li>Including industry-specific keywords relevant to your field</li>
+                        <li>Organizing content with standard section headings that ATS systems recognize</li>
+                        <li>Avoiding complex design elements like tables, columns, and graphics that can confuse ATS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plan and Pricing Questions -->
+        <div class="p-6 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
+            <h2 class="text-xl font-bold">Plans & Pricing</h2>
+        </div>
+        
+        <div class="faq-list p-6">
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">What are the different plans available?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>We offer four different plans:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li><strong>Free:</strong> Resume preview only, basic template selection</li>
+                        <li><strong>Basic (₹49):</strong> Download 1 PDF resume, all templates, color customization</li>
+                        <li><strong>Pro (₹99):</strong> 3 resume variants, cover letter, all templates, color customization, ATS optimization</li>
+                        <li><strong>Premium (₹199):</strong> All Pro features plus 1-on-1 feedback from our resume experts</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Do you offer refunds?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Yes, we offer a 7-day money-back guarantee if you're not satisfied with our service. Please contact our support team at support@airesumebuilder.com to process your refund.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Can I upgrade my plan later?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Yes, you can upgrade your plan at any time. Your new benefits will be available immediately after payment.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical Questions -->
+        <div class="p-6 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
+            <h2 class="text-xl font-bold">Technical Questions</h2>
+        </div>
+        
+        <div class="faq-list p-6">
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Can I edit my resume after creation?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Yes, you can come back and make changes to your resume for up to 30 days after purchase. Simply log in to your account and access your saved resumes to make edits.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">What file formats do you provide for the resume?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>Currently, we provide resumes in PDF format, which is the most widely accepted format for job applications. PDF ensures your resume appears exactly the same on any device or platform.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item py-4" data-aos="fade-up">
+                <div class="faq-question flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">What payment methods do you accept?</h3>
+                    <i class="fas fa-chevron-down text-gray-500 faq-icon"></i>
+                </div>
+                <div class="faq-answer text-gray-600">
+                    <p>We accept all major credit and debit cards, as well as UPI payments through our secure payment processor, Razorpay.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Support -->
+    <div class="max-w-3xl mx-auto mt-16 text-center p-8 bg-gray-100 rounded-2xl" data-aos="fade-up">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Still have questions?</h2>
+        <p class="text-gray-600 mb-6">We're here to help! Contact our support team for assistance.</p>
+        <a href="mailto:support@airesumebuilder.com" class="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-3 px-8 rounded-full hover:shadow-lg transition duration-300">
+            <i class="fas fa-envelope mr-2"></i> Contact Support
+        </a>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-question');
+        
+        faqItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const parent = this.parentElement;
+                const isActive = parent.classList.contains('active');
+                
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(faqItem => {
+                    faqItem.classList.remove('active');
+                });
+                
+                // If the clicked item wasn't active, open it
+                if (!isActive) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

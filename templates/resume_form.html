@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .form-group {
+        margin-bottom: 24px;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #4B5563;
+        transition: all 0.2s;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s;
+        background-color: #f9fafb;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        background-color: #fff;
+    }
+    
+    textarea.form-control {
+        height: 120px;
+        resize: vertical;
+    }
+    
+    .hints {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 6px;
+        padding-left: 2px;
+    }
+    
+    .template-option {
+        border: 2px solid transparent;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .template-option:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .template-option.selected {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+    }
+    
+    .template-preview {
+        height: 160px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .template-preview::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .template-option:hover .template-preview::after {
+        opacity: 1;
+    }
+    
+    .template-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s;
+    }
+    
+    .template-option:hover .template-preview img {
+        transform: scale(1.05);
+    }
+    
+    .template-info {
+        padding: 14px;
+        background-color: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .color-option {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0 6px;
+        border: 3px solid transparent;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .color-option:hover {
+        transform: scale(1.2);
+        border-color: #8b5cf6;
+    }
+    
+    .color-option.selected {
+        border-color: #8b5cf6;
+        transform: scale(1.2);
+    }
+    
+    .form-section {
+        transition: all 0.5s ease;
+        border-left: 3px solid transparent;
+        padding-left: 16px;
+    }
+    
+    .form-section:hover {
+        border-left-color: #8b5cf6;
+    }
+    
+    .submit-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn:after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 100%;
+        top: 0;
+        left: -10%;
+        transform: skewX(-15deg);
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+    }
+    
+    .submit-btn:hover:after {
+        width: 120%;
+        left: -10%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold mb-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">Create Your Resume</h1>
+            <p class="text-gray-600 mb-8 text-lg">Fill in your details and let our AI craft a professional resume for you.</p>
+            <div class="h-1 w-20 bg-gradient-to-r from-violet-600 to-indigo-600 mx-auto rounded-full"></div>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-violet-500 to-indigo-600 py-5 px-8">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Resume Details</h2>
+                    <div class="flex items-center space-x-1">
+                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <form action="{{ url_for('generate_resume') }}" method="post">
+                    <input type="hidden" name="plan" value="{{ plan }}">
+                    
+                    <div class="form-section mb-8" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-user-circle text-violet-500 mr-2"></i> Personal Information
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="linkedin" class="form-label">LinkedIn</label>
+                                <input type="text" id="linkedin" name="linkedin" class="form-control" placeholder="linkedin.com/in/yourprofile">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section mb-8" data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-briefcase text-violet-500 mr-2"></i> Professional Details
+                        </h3>
+                        <div class="form-group mb-6">
+                            <label for="summary" class="form-label">Professional Summary</label>
+                            <textarea id="summary" name="summary" class="form-control" required></textarea>
+                            <div class="hints">
+                                <i class="fas fa-info-circle text-violet-400 mr-1"></i>
+                                A brief overview of your professional background and career goals (2-4 sentences).
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-6">
+                            <label for="education" class="form-label">Education</label>
+                            <textarea id="education" name="education" class="form-control" required></textarea>
+                            <div class="hints">
+                                <i class="fas fa-info-circle text-violet-400 mr-1"></i>
+                                List your degrees, schools, and graduation years. Format: Degree, Institution, Year
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-6">
+                            <label for="experience" class="form-label">Work Experience</label>
+                            <textarea id="experience" name="experience" class="form-control" required></textarea>
+                            <div class="hints">
+                                <i class="fas fa-info-circle text-violet-400 mr-1"></i>
+                                List your job positions, companies, and dates. Format: Position at Company (Year-Year), separated by commas.
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-6">
+                            <label for="skills" class="form-label">Skills</label>
+                            <textarea id="skills" name="skills" class="form-control" required></textarea>
+                            <div class="hints">
+                                <i class="fas fa-info-circle text-violet-400 mr-1"></i>
+                                List your technical and soft skills, separated by commas.
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-6">
+                            <label for="projects" class="form-label">Projects</label>
+                            <textarea id="projects" name="projects" class="form-control"></textarea>
+                            <div class="hints">
+                                <i class="fas fa-info-circle text-violet-400 mr-1"></i>
+                                List notable projects you've worked on, separated by commas.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Template Selection -->
+                    <div class="form-section mb-8" data-aos="fade-up" data-aos-delay="300">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800 flex items-center">
+                            <i class="fas fa-paint-brush text-violet-500 mr-2"></i> Design Preferences
+                        </h3>
+                        <div class="form-group mb-6">
+                            <label class="form-label mb-3">Choose a Template</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {% for template_id, template_data in templates.items() %}
+                                <div class="template-option {% if template_id == selected_template %}selected{% endif %}" onclick="selectTemplate('{{ template_id }}')">
+                                    <div class="template-preview">
+                                        <img src="{{ template_data.preview_img }}" alt="{{ template_data.name }} Template">
+                                    </div>
+                                    <div class="template-info">
+                                        <div class="font-semibold text-gray-800">{{ template_data.name }}</div>
+                                        <div class="text-sm text-gray-600 mt-1">{{ template_data.description }}</div>
+                                    </div>
+                                    <input type="radio" name="template" value="{{ template_id }}" {% if template_id == selected_template %}checked{% endif %} class="hidden template-radio" id="template-{{ template_id }}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    
+                        <!-- Color Selection for paid plans -->
+                        {% if plan != 'free' %}
+                        <div class="form-group mb-8" data-aos="fade-up" data-aos-delay="400">
+                            <label class="form-label mb-3">Choose a Color Scheme</label>
+                            <div class="flex flex-wrap justify-center gap-3 p-3 bg-gray-50 rounded-xl">
+                                {% for template_id, template_data in templates.items() %}
+                                <div class="template-colors" data-template="{{ template_id }}" {% if not loop.first %}style="display: none;"{% endif %}>
+                                    {% for color in template_data.colors %}
+                                    <div class="color-option {% if loop.first %}selected{% endif %}" 
+                                         style="background-color: {{ color }};" 
+                                         onclick="selectColor('{{ color }}')"></div>
+                                    {% endfor %}
+                                    <input type="hidden" name="color" value="{{ templates[template_id].colors[0] }}" id="selected-color">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="text-center mt-10" data-aos="fade-up" data-aos-delay="500">
+                        <button type="submit" class="submit-btn bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all">
+                            <i class="fas fa-magic mr-2"></i> Generate Resume
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-10 text-center text-sm text-gray-600">
+            <p>You're currently using the <span class="font-semibold text-violet-600">{{ plan_details.name }}</span> plan.</p>
+            {% if plan != 'premium' %}
+            <p class="mt-2">
+                <a href="{{ url_for('home') }}" class="text-violet-600 hover:text-violet-800 hover:underline transition-all">Upgrade your plan</a> 
+                for more features and templates.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize template selection with the selected template
+        const selectedTemplate = '{{ selected_template }}';
+        document.querySelector(`#template-${selectedTemplate}`).checked = true;
+        
+        // Show appropriate color options for the selected template
+        document.querySelectorAll('.template-colors').forEach(el => {
+            el.style.display = 'none';
+        });
+        const colorOptions = document.querySelector(`.template-colors[data-template="${selectedTemplate}"]`);
+        if (colorOptions) {
+            colorOptions.style.display = 'block';
+        }
+        
+        // Add focus effects to form fields
+        const formControls = document.querySelectorAll('.form-control');
+        formControls.forEach(control => {
+            control.addEventListener('focus', function() {
+                this.closest('.form-group').querySelector('.form-label').classList.add('text-violet-600');
+            });
+            control.addEventListener('blur', function() {
+                this.closest('.form-group').querySelector('.form-label').classList.remove('text-violet-600');
+            });
+        });
+    });
+    
+    function selectTemplate(templateId) {
+        // Update visual selection
+        document.querySelectorAll('.template-option').forEach(el => {
+            el.classList.remove('selected');
+        });
+        document.querySelector(`#template-${templateId}`).closest('.template-option').classList.add('selected');
+        
+        // Check the correct radio
+        document.querySelector(`#template-${templateId}`).checked = true;
+        
+        // Show appropriate color options
+        document.querySelectorAll('.template-colors').forEach(el => {
+            el.style.display = 'none';
+        });
+        const colorOptions = document.querySelector(`.template-colors[data-template="${templateId}"]`);
+        if (colorOptions) {
+            colorOptions.style.display = 'block';
+            // Select the first color by default
+            const firstColor = colorOptions.querySelector('.color-option');
+            if (firstColor) {
+                const color = firstColor.style.backgroundColor;
+                document.getElementById('selected-color').value = color;
+            }
+        }
+    }
+    
+    function selectColor(color) {
+        // Update visual selection
+        document.querySelectorAll('.color-option').forEach(el => {
+            el.classList.remove('selected');
+        });
+        document.querySelectorAll('.color-option').forEach(el => {
+            if (el.style.backgroundColor === color) {
+                el.classList.add('selected');
+            }
+        });
+        
+        // Update the hidden input
+        document.getElementById('selected-color').value = color;
+    }
+</script>
+{% endblock %} 

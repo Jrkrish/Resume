@@ -1,0 +1,9 @@
+For the complete application, you would need to create the following template preview images:
+
+1. modern.jpg - A preview image of the Modern template
+2. elegant.jpg - A preview image of the Elegant template
+3. creative.jpg - A preview image of the Creative template
+
+These should be 300x200px JPG images showing a miniature preview of each resume template.
+
+For now, you can use any placeholder images or take screenshots of your generated resumes to create these preview images. 
